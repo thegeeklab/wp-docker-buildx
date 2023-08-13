@@ -13,6 +13,8 @@ toml
 config
 host:ip
 wp-docker-buildx
+drone-plugins
+drone-docker
 multiarch
 buildx
 DockerHub
