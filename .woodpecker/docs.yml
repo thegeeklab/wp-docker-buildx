@@ -51,7 +51,7 @@ steps:
       - event: [push, manual]
         branch:
           - ${CI_REPO_DEFAULT_BRANCH}
-      - status: [success]
+        status: [success]
 
   pushrm-quay:
     image: docker.io/chko/docker-pushrm:1
@@ -65,7 +65,7 @@ steps:
       - event: [push, manual]
         branch:
           - ${CI_REPO_DEFAULT_BRANCH}
-      - status: [success]
+        status: [success]
 
 depends_on:
   - build-binary
