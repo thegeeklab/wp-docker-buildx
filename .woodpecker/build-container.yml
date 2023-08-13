@@ -15,7 +15,7 @@ steps:
         - linux/amd64
         - linux/arm64
       provenance: false
-      repo: thegeeklab/${DRONE_REPO_NAME}
+      repo: ${CI_REPO}
     when:
       - event: [pull_request]
 
@@ -31,7 +31,7 @@ steps:
         - linux/amd64
         - linux/arm64
       provenance: false
-      repo: thegeeklab/${DRONE_REPO_NAME}
+      repo: ${CI_REPO}
       username:
         from_secret: docker_username
     when:
@@ -53,7 +53,7 @@ steps:
         - linux/arm64
       provenance: false
       registry: quay.io
-      repo: quay.io/thegeeklab/${DRONE_REPO_NAME}
+      repo: quay.io/${CI_REPO}
       username:
         from_secret: quay_username
     when:
