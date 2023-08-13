@@ -1,6 +1,6 @@
 /dist/
 /release/
-/drone-docker-buildx*
+/wp-docker-buildx*
 
 coverage.out
 CHANGELOG.md

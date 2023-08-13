@@ -12,7 +12,7 @@ gzip
 toml
 config
 host:ip
-drone-docker-buildx
+wp-docker-buildx
 multiarch
 buildx
 DockerHub

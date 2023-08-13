@@ -78,7 +78,7 @@ properties:
       ```yaml
       steps:
         - name: Build
-          image: thegeeklab/drone-docker-buildx:23
+          image: thegeeklab/wp-docker-buildx:23
           settings:
             repo: example/repo
             buildkit_config: |
@@ -167,7 +167,7 @@ properties:
       ```yaml
       steps:
         - name: Build
-          image: thegeeklab/drone-docker-buildx:23
+          image: thegeeklab/wp-docker-buildx:23
           settings:
             repo: example/repo
             cache_from:
@@ -276,7 +276,7 @@ properties:
       ```yaml
       steps:
         - name: Build
-          image: thegeeklab/drone-docker-buildx:23
+          image: thegeeklab/wp-docker-buildx:23
           privileged: true
           environment:
             SECURE_TOKEN:
@@ -289,7 +289,7 @@ properties:
               - "id=SECRET_TOKEN"
       ```
 
-      To use secrets from files a [host volume](https://docs.drone.io/pipeline/docker/syntax/volumes/host/) is required.
+      To use secrets from files a [host volume](https://docs.wp.io/pipeline/docker/syntax/volumes/host/) is required.
       This should be used with caution and avoided whenever possible.
     type: list
     required: false

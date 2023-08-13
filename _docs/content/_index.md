@@ -1,15 +1,15 @@
 ---
-title: drone-docker-buildx
+title: wp-docker-buildx
 ---
 
-[![Build Status](https://img.shields.io/drone/build/thegeeklab/drone-docker-buildx?logo=drone&server=https%3A%2F%2Fdrone.thegeeklab.de)](https://drone.thegeeklab.de/thegeeklab/drone-docker-buildx)
-[![Docker Hub](https://img.shields.io/badge/dockerhub-latest-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/thegeeklab/drone-docker-buildx)
-[![Quay.io](https://img.shields.io/badge/quay-latest-blue.svg?logo=docker&logoColor=white)](https://quay.io/repository/thegeeklab/drone-docker-buildx)
-[![GitHub contributors](https://img.shields.io/github/contributors/thegeeklab/drone-docker-buildx)](https://github.com/thegeeklab/drone-docker-buildx/graphs/contributors)
-[![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/drone-docker-buildx)
-[![License: MIT](https://img.shields.io/github/license/thegeeklab/drone-docker-buildx)](https://github.com/thegeeklab/drone-docker-buildx/blob/main/LICENSE)
+[![Build Status](https://img.shields.io/wp/build/thegeeklab/wp-docker-buildx?logo=wp&server=https%3A%2F%2Fwp.thegeeklab.de)](https://wp.thegeeklab.de/thegeeklab/wp-docker-buildx)
+[![Docker Hub](https://img.shields.io/badge/dockerhub-latest-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/thegeeklab/wp-docker-buildx)
+[![Quay.io](https://img.shields.io/badge/quay-latest-blue.svg?logo=docker&logoColor=white)](https://quay.io/repository/thegeeklab/wp-docker-buildx)
+[![GitHub contributors](https://img.shields.io/github/contributors/thegeeklab/wp-docker-buildx)](https://github.com/thegeeklab/wp-docker-buildx/graphs/contributors)
+[![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/wp-docker-buildx)
+[![License: MIT](https://img.shields.io/github/license/thegeeklab/wp-docker-buildx)](https://github.com/thegeeklab/wp-docker-buildx/blob/main/LICENSE)
 
-Drone plugin to build and publish multiarch Docker images with buildx.
+Woodpecker CI plugin to build and publish multiarch Docker images with buildx.
 
 <!-- prettier-ignore-start -->
 <!-- spellchecker-disable -->
@@ -24,7 +24,7 @@ The tags follow the major version of Docker, e.g. `20`, and the minor and patch 
 ## Usage
 
 {{< hint type=important >}}
-Be aware that the this plugin requires [privileged](https://docs.drone.io/pipeline/docker/syntax/steps/#privileged-mode) capabilities, otherwise the integrated Docker daemon is not able to start.
+Be aware that the this plugin requires [privileged](https://docs.wp.io/pipeline/docker/syntax/steps/#privileged-mode) capabilities, otherwise the integrated Docker daemon is not able to start.
 {{< /hint >}}
 
 ```yaml
@@ -33,7 +33,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/drone-docker-buildx:23
+    image: thegeeklab/wp-docker-buildx:23
     privileged: true
     settings:
       username: octocat
@@ -46,7 +46,7 @@ steps:
 
 <!-- prettier-ignore-start -->
 <!-- spellchecker-disable -->
-{{< propertylist name=drone-docker-buildx.data sort=name >}}
+{{< propertylist name=wp-docker-buildx.data sort=name >}}
 <!-- spellchecker-enable -->
 <!-- prettier-ignore-end -->
 
@@ -64,7 +64,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/drone-docker-buildx:23
+    image: thegeeklab/wp-docker-buildx:23
     privileged: true
     settings:
       registry: ghcr.io
@@ -82,7 +82,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/drone-docker-buildx:23
+    image: thegeeklab/wp-docker-buildx:23
     privileged: true
     environment:
       AWS_ACCESS_KEY_ID:
@@ -111,7 +111,7 @@ make build
 Build the Docker image with the following command:
 
 ```shell
-docker build --file docker/Dockerfile.amd64 --tag thegeeklab/drone-docker-buildx .
+docker build --file docker/Dockerfile.amd64 --tag thegeeklab/wp-docker-buildx .
 ```
 
 ## Test
@@ -120,9 +120,9 @@ docker build --file docker/Dockerfile.amd64 --tag thegeeklab/drone-docker-buildx
 docker run --rm \
   -e PLUGIN_TAG=latest \
   -e PLUGIN_REPO=octocat/hello-world \
-  -e DRONE_COMMIT_SHA=00000000 \
+  -e CI_COMMIT_SHA=00000000 \
   -v $(pwd):$(pwd) \
   -w $(pwd) \
   --privileged \
-  thegeeklab/drone-docker-buildx --dry-run
+  thegeeklab/wp-docker-buildx --dry-run
 ```

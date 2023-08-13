@@ -9,7 +9,7 @@ import (
 
 func (p Plugin) startCoredns() {
 	cmd := exec.Command("coredns", "-conf", "/etc/coredns/Corefile")
-	if p.settings.Daemon.Debug {
+	if p.Settings.Daemon.Debug {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 	} else {

@@ -12,10 +12,10 @@ FROM docker:24.0-dind@sha256:9e71442b7584518e6efefd9f325cbc5b4b9b000886cffef6e67
 
 LABEL maintainer="Robert Kaussow <mail@thegeeklab.de>"
 LABEL org.opencontainers.image.authors="Robert Kaussow <mail@thegeeklab.de>"
-LABEL org.opencontainers.image.title="drone-docker-buildx"
-LABEL org.opencontainers.image.url="https://github.com/thegeeklab/drone-docker-buildx"
-LABEL org.opencontainers.image.source="https://github.com/thegeeklab/drone-docker-buildx"
-LABEL org.opencontainers.image.documentation="https://github.com/thegeeklab/drone-docker-buildx"
+LABEL org.opencontainers.image.title="wp-docker-buildx"
+LABEL org.opencontainers.image.url="https://github.com/thegeeklab/wp-docker-buildx"
+LABEL org.opencontainers.image.source="https://github.com/thegeeklab/wp-docker-buildx"
+LABEL org.opencontainers.image.documentation="https://github.com/thegeeklab/wp-docker-buildx"
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -37,5 +37,5 @@ RUN apk --update add --virtual .build-deps curl && \
     rm -rf /tmp/*
 
 COPY --from=build /src/Corefile /etc/coredns/Corefile
-COPY --from=build /src/dist/drone-docker-buildx /bin/drone-docker-buildx
-ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh", "drone-docker-buildx"]
+COPY --from=build /src/dist/wp-docker-buildx /bin/wp-docker-buildx
+ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh", "wp-docker-buildx"]

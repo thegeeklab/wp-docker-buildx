@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/thegeeklab/drone-docker-buildx/plugin"
-	"github.com/thegeeklab/drone-plugin-lib/v2/drone"
+	"github.com/thegeeklab/wp-docker-buildx/plugin"
+	wp "github.com/thegeeklab/wp-plugin-go/plugin"
 	"github.com/urfave/cli/v2"
 )
 
@@ -209,7 +209,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Name:     "cache-from",
 			EnvVars:  []string{"PLUGIN_CACHE_FROM"},
 			Usage:    "images to consider as cache sources",
-			Value:    &drone.StringSliceFlag{},
+			Value:    &wp.StringSliceFlag{},
 			Category: category,
 		},
 		&cli.StringFlag{
@@ -325,7 +325,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Name:     "secrets",
 			EnvVars:  []string{"PLUGIN_SECRETS"},
 			Usage:    "exposes secrets to the build",
-			Value:    &drone.StringSliceFlag{},
+			Value:    &wp.StringSliceFlag{},
 			Category: category,
 		},
 	}

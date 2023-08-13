@@ -13,8 +13,8 @@ const (
 )
 
 func (p Plugin) startDaemon() {
-	cmd := commandDaemon(p.settings.Daemon)
-	if p.settings.Daemon.Debug {
+	cmd := commandDaemon(p.Settings.Daemon)
+	if p.Settings.Daemon.Debug {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 	} else {
