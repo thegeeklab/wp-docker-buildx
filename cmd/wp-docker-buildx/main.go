@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/thegeeklab/wp-docker-buildx/plugin"
@@ -14,8 +13,6 @@ var (
 	BuildVersion = "devel"
 	BuildDate    = "00000000"
 )
-
-var ErrTypeAssertionFailed = errors.New("type assertion failed")
 
 func main() {
 	settings := &plugin.Settings{}

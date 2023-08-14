@@ -2,7 +2,7 @@
 
 Woodpecker CI plugin to build multiarch OCI images with buildx
 
-[![Build Status](https://img.shields.io/wp/build/thegeeklab/wp-docker-buildx?logo=wp&server=https%3A%2F%2Fwp.thegeeklab.de)](https://wp.thegeeklab.de/thegeeklab/wp-docker-buildx)
+[![Build Status](https://ci.thegeeklab.de/api/badges/thegeeklab/wp-docker-buildx/status.svg)](https://ci.thegeeklab.de/repos/thegeeklab/wp-docker-buildx)
 [![Docker Hub](https://img.shields.io/badge/dockerhub-latest-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/thegeeklab/wp-docker-buildx)
 [![Quay.io](https://img.shields.io/badge/quay-latest-blue.svg?logo=docker&logoColor=white)](https://quay.io/repository/thegeeklab/wp-docker-buildx)
 [![Go Report Card](https://goreportcard.com/badge/github.com/thegeeklab/wp-docker-buildx)](https://goreportcard.com/report/github.com/thegeeklab/wp-docker-buildx)
