@@ -17,10 +17,6 @@ Woodpecker CI plugin to build and publish multiarch Docker images with buildx.
 <!-- spellchecker-enable -->
 <!-- prettier-ignore-end -->
 
-## Versioning
-
-The tags follow the major version of Docker, e.g. `20`, and the minor and patch parts reflect the `version` of the plugin. A full example would be `20.12.5`. Minor versions can introduce breaking changes, while patch versions can be considered non-breaking.
-
 ## Usage
 
 {{< hint type=important >}}
@@ -106,7 +102,7 @@ make build
 Build the Docker image with the following command:
 
 ```shell
-docker build --file docker/Containerfile.multiarch --tag thegeeklab/wp-docker-buildx .
+docker build --file Containerfile.multiarch --tag thegeeklab/wp-docker-buildx .
 ```
 
 ## Test
