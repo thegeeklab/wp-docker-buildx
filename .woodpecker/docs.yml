@@ -45,7 +45,7 @@ steps:
         target:  DOCKER_USER
     environment:
       PUSHRM_FILE: README.md
-      PUSHRM_SHORT: Woodpecker CI plugin to build multiarch Docker images with buildx
+      PUSHRM_SHORT: Woodpecker CI plugin to build multiarch OCI images with buildx
       PUSHRM_TARGET: ${CI_REPO}
     when:
       - event: [push, manual]

@@ -9,7 +9,7 @@ title: wp-docker-buildx
 [![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/wp-docker-buildx)
 [![License: MIT](https://img.shields.io/github/license/thegeeklab/wp-docker-buildx)](https://github.com/thegeeklab/wp-docker-buildx/blob/main/LICENSE)
 
-Woodpecker CI plugin to build and publish multiarch Docker images with buildx.
+Woodpecker CI plugin to build multiarch OCI images with buildx.
 
 <!-- prettier-ignore-start -->
 <!-- spellchecker-disable -->
@@ -99,7 +99,7 @@ Build the binary with the following command:
 make build
 ```
 
-Build the Docker image with the following command:
+Build the container image with the following command:
 
 ```shell
 docker build --file Containerfile.multiarch --tag thegeeklab/wp-docker-buildx .

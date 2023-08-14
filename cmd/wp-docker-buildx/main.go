@@ -21,7 +21,7 @@ func main() {
 	settings := &plugin.Settings{}
 	options := wp.Options{
 		Name:            "wp-docker-buildx",
-		Description:     "Build OCI container with DinD and buildx",
+		Description:     "Build multiarch OCI images with buildx",
 		Version:         BuildVersion,
 		VersionMetadata: fmt.Sprintf("date=%s", BuildDate),
 		Flags:           settingsFlags(settings, wp.FlagsPluginCategory),
