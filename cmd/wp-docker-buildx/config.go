@@ -116,11 +116,11 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Category:    category,
 		},
 		&cli.StringFlag{
-			Name:        "dockerfile",
-			EnvVars:     []string{"PLUGIN_DOCKERFILE"},
-			Usage:       "dockerfile to use for the image build",
-			Value:       "Dockerfile",
-			Destination: &settings.Build.Dockerfile,
+			Name:        "containerfile",
+			EnvVars:     []string{"PLUGIN_CONTAINERFILE"},
+			Usage:       "containerfile to use for the image build",
+			Value:       "Containerfile",
+			Destination: &settings.Build.Containerfile,
 			Category:    category,
 		},
 		&cli.StringFlag{

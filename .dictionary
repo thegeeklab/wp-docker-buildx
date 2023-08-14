@@ -6,7 +6,7 @@ ipv6
 buildkit
 json
 config
-dockerfile
+containerfile
 og
 gzip
 toml

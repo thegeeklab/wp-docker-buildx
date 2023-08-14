@@ -100,18 +100,13 @@ steps:
 Build the binary with the following command:
 
 ```shell
-export GOOS=linux
-export GOARCH=amd64
-export CGO_ENABLED=0
-export GO111MODULE=on
-
 make build
 ```
 
 Build the Docker image with the following command:
 
 ```shell
-docker build --file docker/Dockerfile.amd64 --tag thegeeklab/wp-docker-buildx .
+docker build --file docker/Containerfile.multiarch --tag thegeeklab/wp-docker-buildx .
 ```
 
 ## Test
@@ -121,8 +116,8 @@ docker run --rm \
   -e PLUGIN_TAG=latest \
   -e PLUGIN_REPO=octocat/hello-world \
   -e CI_COMMIT_SHA=00000000 \
-  -v $(pwd):$(pwd) \
-  -w $(pwd) \
+  -v $(pwd):/build:z \
+  -w /build \
   --privileged \
   thegeeklab/wp-docker-buildx --dry-run
 ```

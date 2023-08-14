@@ -90,9 +90,9 @@ properties:
     defaultValue: false
     required: false
 
-  - name: dockerfile
-    description: Set dockerfile to use for the image build.
-    defaultValue: Dockerfile
+  - name: containerfile
+    description: Set the containerfile to use for the image build.
+    defaultValue: Containerfile
     type: string
     required: false
 

@@ -48,32 +48,32 @@ type Login struct {
 
 // Build defines Docker build parameters.
 type Build struct {
-	Ref          string          // Git commit ref
-	Branch       string          // Git repository branch
-	Dockerfile   string          // Docker build Dockerfile
-	Context      string          // Docker build context
-	TagsAuto     bool            // Docker build auto tag
-	TagsSuffix   string          // Docker build tags with suffix
-	Tags         cli.StringSlice // Docker build tags
-	ExtraTags    cli.StringSlice // Docker build tags including registry
-	Platforms    cli.StringSlice // Docker build target platforms
-	Args         cli.StringSlice // Docker build args
-	ArgsEnv      cli.StringSlice // Docker build args from env
-	Target       string          // Docker build target
-	Pull         bool            // Docker build pull
-	CacheFrom    []string        // Docker build cache-from
-	CacheTo      string          // Docker build cache-to
-	Compress     bool            // Docker build compress
-	Repo         string          // Docker build repository
-	NoCache      bool            // Docker build no-cache
-	AddHost      cli.StringSlice // Docker build add-host
-	Quiet        bool            // Docker build quiet
-	Output       string          // Docker build output folder
-	NamedContext cli.StringSlice // Docker build named context
-	Labels       cli.StringSlice // Docker build labels
-	Provenance   string          // Docker build provenance attestation
-	SBOM         string          // Docker build sbom attestation
-	Secrets      []string        // Docker build secrets
+	Ref           string          // Git commit ref
+	Branch        string          // Git repository branch
+	Containerfile string          // Docker build Containerfile
+	Context       string          // Docker build context
+	TagsAuto      bool            // Docker build auto tag
+	TagsSuffix    string          // Docker build tags with suffix
+	Tags          cli.StringSlice // Docker build tags
+	ExtraTags     cli.StringSlice // Docker build tags including registry
+	Platforms     cli.StringSlice // Docker build target platforms
+	Args          cli.StringSlice // Docker build args
+	ArgsEnv       cli.StringSlice // Docker build args from env
+	Target        string          // Docker build target
+	Pull          bool            // Docker build pull
+	CacheFrom     []string        // Docker build cache-from
+	CacheTo       string          // Docker build cache-to
+	Compress      bool            // Docker build compress
+	Repo          string          // Docker build repository
+	NoCache       bool            // Docker build no-cache
+	AddHost       cli.StringSlice // Docker build add-host
+	Quiet         bool            // Docker build quiet
+	Output        string          // Docker build output folder
+	NamedContext  cli.StringSlice // Docker build named context
+	Labels        cli.StringSlice // Docker build labels
+	Provenance    string          // Docker build provenance attestation
+	SBOM          string          // Docker build sbom attestation
+	Secrets       []string        // Docker build secrets
 }
 
 func New(options wp.Options, settings *Settings) *Plugin {

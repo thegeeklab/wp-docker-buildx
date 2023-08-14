@@ -76,7 +76,7 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		"buildx",
 		"build",
 		"--rm=true",
-		"-f", build.Dockerfile,
+		"-f", build.Containerfile,
 	}
 
 	defaultBuildArgs := []string{

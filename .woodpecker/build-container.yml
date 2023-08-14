@@ -9,7 +9,7 @@ steps:
   dryrun:
     image: quay.io/thegeeklab/drone-docker-buildx:latest
     settings:
-      dockerfile: Dockerfile.multiarch
+      containerfile: Containerfile.multiarch
       dry_run: true
       platforms:
         - linux/amd64
@@ -24,7 +24,7 @@ steps:
     image: quay.io/thegeeklab/drone-docker-buildx:latest
     settings:
       auto_tag: true
-      dockerfile: Dockerfile.multiarch
+      containerfile: Containerfile.multiarch
       password:
         from_secret: docker_password
       platforms:
@@ -45,7 +45,7 @@ steps:
     image: quay.io/thegeeklab/drone-docker-buildx:latest
     settings:
       auto_tag: true
-      dockerfile: Dockerfile.multiarch
+      containerfile: Containerfile.multiarch
       password:
         from_secret: quay_password
       platforms:

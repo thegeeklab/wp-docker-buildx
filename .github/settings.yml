@@ -43,3 +43,29 @@ labels:
   - name: wontfix
     color: ffffff
     description: This will not be worked on
+
+branches:
+  - name: main
+    protection:
+      required_pull_request_reviews: null
+      required_status_checks:
+        strict: false
+        contexts:
+          - ci/woodpecker/pr/test
+          - ci/woodpecker/pr/build-binary
+          - ci/woodpecker/pr/build-container
+          - ci/woodpecker/pr/docs
+      enforce_admins: false
+      required_linear_history: true
+      restrictions: null
+  - name: docs
+    protection:
+      required_pull_request_reviews: null
+      required_status_checks: null
+      enforce_admins: true
+      required_linear_history: true
+      restrictions:
+        apps: []
+        users: []
+        teams:
+          - bot
