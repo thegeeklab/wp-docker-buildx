@@ -19,22 +19,22 @@ steps:
       FORCE_COLOR: "true"
       NPM_CONFIG_LOGLEVEL: "error"
 
-  publish:
-    image: quay.io/thegeeklab/drone-git-action
-    settings:
-      action:
-        - pages
-      author_email: bot@thegeeklab.de
-      author_name: thegeeklab-bot
-      branch: docs
-      message: auto-update documentation
-      netrc_password:
-        from_secret: github_token
-      pages_directory: _docs/
-    when:
-      - event: [push, manual]
-        branch:
-          - ${CI_REPO_DEFAULT_BRANCH}
+  # publish:
+  #   image: quay.io/thegeeklab/drone-git-action
+  #   settings:
+  #     action:
+  #       - pages
+  #     author_email: bot@thegeeklab.de
+  #     author_name: thegeeklab-bot
+  #     branch: docs
+  #     message: auto-update documentation
+  #     netrc_password:
+  #       from_secret: github_token
+  #     pages_directory: _docs/
+  #   when:
+  #     - event: [push, manual]
+  #       branch:
+  #         - ${CI_REPO_DEFAULT_BRANCH}
 
   pushrm-dockerhub:
     image: docker.io/chko/docker-pushrm:1
