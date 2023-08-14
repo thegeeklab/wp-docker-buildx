@@ -20,3 +20,4 @@ buildx
 DockerHub
 ECR
 GHCR
+OCI
