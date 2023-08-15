@@ -27,7 +27,7 @@ steps:
       author_email: bot@thegeeklab.de
       author_name: thegeeklab-bot
       branch: docs
-      message: auto-update documentation
+      message: "[skip ci] auto-update documentation"
       netrc_password:
         from_secret: github_token
       pages_directory: _docs/
