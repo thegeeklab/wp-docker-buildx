@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/coreos/go-semver v0.3.1
 	github.com/rs/zerolog v1.30.0
-	github.com/thegeeklab/wp-plugin-go v0.1.0
+	github.com/thegeeklab/wp-plugin-go v0.3.0
 	github.com/urfave/cli/v2 v2.25.7
 	golang.org/x/sys v0.11.0
 )
