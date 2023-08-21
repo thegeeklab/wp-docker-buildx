@@ -5,7 +5,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// Plugin implements provide the plugin implementation.
+// Plugin implements provide the plugin.
 type Plugin struct {
 	*wp.Plugin
 	Settings *Settings

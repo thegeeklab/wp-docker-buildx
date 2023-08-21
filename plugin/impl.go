@@ -18,8 +18,6 @@ var ErrTypeAssertionFailed = errors.New("type assertion failed")
 
 const strictFilePerm = 0o600
 
-// Execute provides the implementation of the plugin.
-//
 //nolint:revive
 func (p *Plugin) run(ctx context.Context) error {
 	if err := p.FlagsFromContext(); err != nil {
