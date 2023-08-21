@@ -5,7 +5,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// Plugin implements provide the plugin implementation.
+// Plugin implements provide the plugin.
 type Plugin struct {
 	*wp.Plugin
 	Settings *Settings
@@ -79,7 +79,9 @@ type Build struct {
 func New(options wp.Options, settings *Settings) *Plugin {
 	p := &Plugin{}
 
-	options.Execute = p.run
+	if options.Execute == nil {
+		options.Execute = p.run
+	}
 
 	p.Plugin = wp.New(options)
 	p.Settings = settings

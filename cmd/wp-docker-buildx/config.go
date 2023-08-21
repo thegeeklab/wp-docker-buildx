@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/thegeeklab/wp-docker-buildx/plugin"
-	wp "github.com/thegeeklab/wp-plugin-go/plugin"
+	"github.com/thegeeklab/wp-plugin-go/types"
 	"github.com/urfave/cli/v2"
 )
 
@@ -209,7 +209,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Name:     "cache-from",
 			EnvVars:  []string{"PLUGIN_CACHE_FROM"},
 			Usage:    "images to consider as cache sources",
-			Value:    &wp.StringSliceFlag{},
+			Value:    &types.StringSliceFlag{},
 			Category: category,
 		},
 		&cli.StringFlag{
@@ -325,7 +325,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			Name:     "secrets",
 			EnvVars:  []string{"PLUGIN_SECRETS"},
 			Usage:    "exposes secrets to the build",
-			Value:    &wp.StringSliceFlag{},
+			Value:    &types.StringSliceFlag{},
 			Category: category,
 		},
 	}
