@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog/log"
-	wp "github.com/thegeeklab/wp-plugin-go/plugin"
+	"github.com/thegeeklab/wp-plugin-go/types"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
 )
@@ -21,20 +21,10 @@ const strictFilePerm = 0o600
 // Execute provides the implementation of the plugin.
 //
 //nolint:revive
-func (p *Plugin) run(ctx context.Context, cCtx *cli.Context) error {
-	cacheFrom, ok := cCtx.Generic("cache-from").(*wp.StringSliceFlag)
-	if !ok {
-		return fmt.Errorf("%w: failed to read cache-from input", ErrTypeAssertionFailed)
+func (p *Plugin) run(ctx context.Context) error {
+	if err := p.FlagsFromContext(); err != nil {
+		return fmt.Errorf("validation failed: %w", err)
 	}
-
-	p.Settings.Build.CacheFrom = cacheFrom.Get()
-
-	secrets, ok := cCtx.Generic("secrets").(*wp.StringSliceFlag)
-	if !ok {
-		return fmt.Errorf("%w: failed to read secrets input", ErrTypeAssertionFailed)
-	}
-
-	p.Settings.Build.Secrets = secrets.Get()
 
 	if err := p.Validate(); err != nil {
 		return fmt.Errorf("validation failed: %w", err)
@@ -180,6 +170,24 @@ func (p *Plugin) Execute() error {
 			return err
 		}
 	}
+
+	return nil
+}
+
+func (p *Plugin) FlagsFromContext() error {
+	cacheFrom, ok := p.Context.Generic("cache-from").(*types.StringSliceFlag)
+	if !ok {
+		return fmt.Errorf("%w: failed to read cache-from input", ErrTypeAssertionFailed)
+	}
+
+	p.Settings.Build.CacheFrom = cacheFrom.Get()
+
+	secrets, ok := p.Context.Generic("secrets").(*types.StringSliceFlag)
+	if !ok {
+		return fmt.Errorf("%w: failed to read secrets input", ErrTypeAssertionFailed)
+	}
+
+	p.Settings.Build.Secrets = secrets.Get()
 
 	return nil
 }
