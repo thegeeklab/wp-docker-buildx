@@ -1,5 +1,5 @@
-/dist/
-/release/
+/dist
+/release
 /wp-docker-buildx*
 
 coverage.out
