@@ -289,7 +289,7 @@ properties:
               - "id=SECRET_TOKEN"
       ```
 
-      To use secrets from files a [host volume](https://docs.wp.io/pipeline/docker/syntax/volumes/host/) is required.
+      To use secrets from files a [host volume](https://woodpecker-ci.org/docs/usage/volumes) is required.
       This should be used with caution and avoided whenever possible.
     type: list
     required: false
