@@ -10,7 +10,7 @@ Woodpecker CI plugin to build multiarch OCI images with buildx
 [![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/wp-docker-buildx)
 [![License: Apache-2.0](https://img.shields.io/github/license/thegeeklab/wp-docker-buildx)](https://github.com/thegeeklab/wp-docker-buildx/blob/main/LICENSE)
 
-Woodpecker CI plugin to build multiarch OCI images with buildx. This plugin is a fork of [drone-plugins/drone-docker](https://github.com/drone-plugins/drone-docker). You can find the full documentation at [https://wp-plugin-index.geekdocs.de](https://wp-plugin-index.geekdocs.de/plugins/wp-docker-buildx).
+Woodpecker CI plugin to build multiarch OCI images with buildx. This plugin is a fork of [drone-plugins/drone-docker](https://github.com/drone-plugins/drone-docker). You can find the full documentation at [https://woodpecker-plugins.geekdocs.de](https://woodpecker-plugins.geekdocs.de/plugins/wp-docker-buildx).
 
 ## Community
 
