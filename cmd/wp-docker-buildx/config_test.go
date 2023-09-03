@@ -40,7 +40,6 @@ func Test_pluginOptions(t *testing.T) {
 		}
 
 		got := plugin.New(options, settings)
-		// got.App.HideHelp = true
 
 		_ = got.App.Run([]string{"wp-docker-buildx"})
 		_ = got.FlagsFromContext()
