@@ -214,6 +214,7 @@ func hasProxyBuildArg(build *Build, key string) bool {
 func commandDaemon(daemon Daemon) *execabs.Cmd {
 	args := []string{
 		"--data-root", daemon.StoragePath,
+		"--max-concurrent-uploads", daemon.MaxConcurrentUploads,
 		"--host=unix:///var/run/docker.sock",
 	}
 
@@ -229,11 +230,11 @@ func commandDaemon(daemon Daemon) *execabs.Cmd {
 		args = append(args, "--ipv6")
 	}
 
-	if len(daemon.Mirror) != 0 {
+	if daemon.Mirror != "" {
 		args = append(args, "--registry-mirror", daemon.Mirror)
 	}
 
-	if len(daemon.Bip) != 0 {
+	if daemon.Bip != "" {
 		args = append(args, "--bip", daemon.Bip)
 	}
 
@@ -245,7 +246,7 @@ func commandDaemon(daemon Daemon) *execabs.Cmd {
 		args = append(args, "--dns-search", dnsSearch)
 	}
 
-	if len(daemon.MTU) != 0 {
+	if daemon.MTU != "" {
 		args = append(args, "--mtu", daemon.MTU)
 	}
 

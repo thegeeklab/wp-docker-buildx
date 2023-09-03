@@ -90,6 +90,14 @@ properties:
     defaultValue: false
     required: false
 
+  - name: max_concurrent_uploads
+    description: |
+      By default the Docker daemon will push five layers of an image at a time. If you are on a low bandwidth connection this may cause
+      timeout issues and you may want to lower with this option.
+    type: string
+    defaultValue: 5
+    required: false
+
   - name: containerfile
     description: Set the containerfile to use for the image build.
     defaultValue: Containerfile
