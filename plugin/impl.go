@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/cenkalti/backoff"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-plugin-go/types"
 	"github.com/urfave/cli/v2"
@@ -17,12 +16,7 @@ import (
 
 var ErrTypeAssertionFailed = errors.New("type assertion failed")
 
-const (
-	strictFilePerm               = 0o600
-	daemonBackoffMaxRetries      = 3
-	daemonBackoffInitialInterval = 2 * time.Second
-	daemonBackoffMultiplier      = 3.5
-)
+const strictFilePerm = 0o600
 
 //nolint:revive
 func (p *Plugin) run(ctx context.Context) error {
@@ -155,31 +149,16 @@ func (p *Plugin) Execute() error {
 	// add proxy build args
 	addProxyBuildArgs(&p.Settings.Build)
 
-	versionCmd := commandVersion() // docker version
+	var cmds []*execabs.Cmd
+	cmds = append(cmds, commandVersion()) // docker version
+	cmds = append(cmds, commandInfo())    // docker info
+	cmds = append(cmds, commandBuilder(p.Settings.Daemon))
+	cmds = append(cmds, commandBuildx())
 
-	versionCmd.Stdout = os.Stdout
-	versionCmd.Stderr = os.Stderr
-	trace(versionCmd)
-
-	backoffOps := func() error {
-		return versionCmd.Run()
-	}
-	backoffLog := func(err error, delay time.Duration) {
-		log.Error().Msgf("failed to exec docker version: %v: retry in %s", err, delay.Truncate(time.Second))
-	}
-
-	if err := backoff.RetryNotify(backoffOps, newBackoff(daemonBackoffMaxRetries), backoffLog); err != nil {
-		return err
-	}
-
-	var batchCmd []*execabs.Cmd
-	batchCmd = append(batchCmd, commandInfo()) // docker info
-	batchCmd = append(batchCmd, commandBuilder(p.Settings.Daemon))
-	batchCmd = append(batchCmd, commandBuildx())
-	batchCmd = append(batchCmd, commandBuild(p.Settings.Build, p.Settings.Dryrun)) // docker build
+	cmds = append(cmds, commandBuild(p.Settings.Build, p.Settings.Dryrun)) // docker build
 
 	// execute all commands in batch mode.
-	for _, cmd := range batchCmd {
+	for _, cmd := range cmds {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		trace(cmd)
@@ -209,12 +188,4 @@ func (p *Plugin) FlagsFromContext() error {
 	p.Settings.Build.Secrets = secrets.Get()
 
 	return nil
-}
-
-func newBackoff(maxRetries uint64) backoff.BackOff {
-	b := backoff.NewExponentialBackOff()
-	b.InitialInterval = daemonBackoffInitialInterval
-	b.Multiplier = daemonBackoffMultiplier
-
-	return backoff.WithMaxRetries(b, maxRetries)
 }

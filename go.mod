@@ -3,7 +3,6 @@ module github.com/thegeeklab/wp-docker-buildx
 go 1.21
 
 require (
-	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/coreos/go-semver v0.3.1
 	github.com/rs/zerolog v1.30.0
 	github.com/thegeeklab/wp-plugin-go v1.0.1
