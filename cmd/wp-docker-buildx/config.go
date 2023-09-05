@@ -125,8 +125,8 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "containerfile",
 			EnvVars:     []string{"PLUGIN_CONTAINERFILE"},
-			Usage:       "max concurrent uploads",
-			Value:       "5",
+			Usage:       "containerfile to use for the image build",
+			Value:       "Containerfile",
 			Destination: &settings.Build.Containerfile,
 			Category:    category,
 		},

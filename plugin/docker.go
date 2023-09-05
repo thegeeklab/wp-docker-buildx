@@ -214,7 +214,6 @@ func hasProxyBuildArg(build *Build, key string) bool {
 func commandDaemon(daemon Daemon) *execabs.Cmd {
 	args := []string{
 		"--data-root", daemon.StoragePath,
-		"--max-concurrent-uploads", daemon.MaxConcurrentUploads,
 		"--host=unix:///var/run/docker.sock",
 	}
 
@@ -252,6 +251,10 @@ func commandDaemon(daemon Daemon) *execabs.Cmd {
 
 	if daemon.Experimental {
 		args = append(args, "--experimental")
+	}
+
+	if daemon.MaxConcurrentUploads != "" {
+		args = append(args, "--max-concurrent-uploads", daemon.MaxConcurrentUploads)
 	}
 
 	return execabs.Command(dockerdBin, args...)
