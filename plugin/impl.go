@@ -155,17 +155,17 @@ func (p *Plugin) Execute() error {
 	// add proxy build args
 	addProxyBuildArgs(&p.Settings.Build)
 
-	versionCmd := commandVersion() // docker version
-
-	versionCmd.Stdout = os.Stdout
-	versionCmd.Stderr = os.Stderr
-	trace(versionCmd)
-
 	backoffOps := func() error {
+		versionCmd := commandVersion() // docker version
+
+		versionCmd.Stdout = os.Stdout
+		versionCmd.Stderr = os.Stderr
+		trace(versionCmd)
+
 		return versionCmd.Run()
 	}
 	backoffLog := func(err error, delay time.Duration) {
-		log.Error().Msgf("failed to exec docker version: %v: retry in %s", err, delay.Truncate(time.Second))
+		log.Error().Msgf("failed to run docker version command: %v: retry in %s", err, delay.Truncate(time.Second))
 	}
 
 	if err := backoff.RetryNotify(backoffOps, newBackoff(daemonBackoffMaxRetries), backoffLog); err != nil {
