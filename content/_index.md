@@ -21,7 +21,7 @@ Woodpecker CI plugin to build multiarch OCI images with buildx.
 ## Usage
 
 {{< hint type=important >}}
-Be aware that the this plugin requires [privileged](https://woodpecker-ci.org/docs/usage/pipeline-syntax#privileged-mode) capabilities, otherwise the integrated Docker daemon is not able to start.
+Be aware that the this plugin requires [privileged](https://woodpecker-ci.org/docs/usage/workflow-syntax#privileged-mode) capabilities, otherwise the integrated Docker daemon is not able to start.
 {{< /hint >}}
 
 ```yaml
