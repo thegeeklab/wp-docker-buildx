@@ -7,7 +7,7 @@ require (
 	github.com/coreos/go-semver v0.3.1
 	github.com/rs/zerolog v1.31.0
 	github.com/thegeeklab/wp-plugin-go v1.0.2
-	github.com/urfave/cli/v2 v2.25.7
+	github.com/urfave/cli/v2 v2.26.0
 	golang.org/x/sys v0.15.0
 )
 
