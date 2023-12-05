@@ -10,6 +10,7 @@ import (
 
 	"github.com/cenkalti/backoff"
 	"github.com/rs/zerolog/log"
+	"github.com/thegeeklab/wp-plugin-go/tag"
 	"github.com/thegeeklab/wp-plugin-go/types"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
@@ -49,13 +50,14 @@ func (p *Plugin) Validate() error {
 
 	if p.Settings.Build.TagsAuto {
 		// return true if tag event or default branch
-		if UseDefaultTag(
+		if tag.IsTaggable(
 			p.Settings.Build.Ref,
 			p.Settings.Build.Branch,
 		) {
-			tag, err := DefaultTagSuffix(
+			tag, err := tag.SemverTagSuffix(
 				p.Settings.Build.Ref,
 				p.Settings.Build.TagsSuffix,
+				true,
 			)
 			if err != nil {
 				return fmt.Errorf("cannot generate tags from %s, invalid semantic version: %w", p.Settings.Build.Ref, err)
