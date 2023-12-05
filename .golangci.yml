@@ -96,5 +96,8 @@ linters-settings:
     extra-rules: true
   ireturn:
     allow:
+      - anon
       - error
-      - backoff.BackOff
+      - empty
+      - stdlib
+      - ^github\.com\/cenkalti\/backoff\/\S+\.BackOff$

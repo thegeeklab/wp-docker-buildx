@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/cenkalti/backoff"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-plugin-go/tag"
 	"github.com/thegeeklab/wp-plugin-go/types"
