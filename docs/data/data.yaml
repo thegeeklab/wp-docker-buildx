@@ -6,6 +6,26 @@ properties:
     type: list
     required: false
 
+  - name: auto_tag
+    description: |
+      Generate tag names automatically based on git branch and git tag.
+
+      When this feature is enabled and the event type is `tag`, the plugin will automatically tag
+      the image using the standard semVer convention. For example:
+      - `1.0.0` produces docker tags `1`, `1.0`, `1.0.0`
+      - `1.0.0-rc.1` produces docker tags `1.0.0-rc.1`
+      When the event type is `push` and the target branch is your default branch, the plugin will
+      automatically tag the image as `latest`. All other event types and branches are ignored.
+    type: bool
+    defaultvalue: false
+    required: false
+
+  - name: auto_tag_suffix
+    description: |
+      Generate tag names with the given suffix.
+    type: string
+    required: false
+
   - name: bip
     description: |
       Allow the docker daemon to bride IP address.
@@ -117,26 +137,6 @@ properties:
   - name: debug
     description: |
       Enable verbose debug mode for the docker daemon.
-    type: bool
-    defaultvalue: false
-    required: false
-
-  - name: auto_tag_suffix
-    description: |
-      Generate tag names with the given suffix.
-    type: string
-    required: false
-
-  - name: auto_tag
-    description: |
-      Generate tag names automatically based on git branch and git tag.
-
-      When this feature is enabled and the event type is `tag`, the plugin will automatically tag
-      the image using the standard semVer convention. For example:
-      - `1.0.0` produces docker tags `1`, `1.0`, `1.0.0`
-      - `1.0.0-rc.1` produces docker tags `1.0.0-rc.1`
-      When the event type is `push` and the target branch is your default branch, the plugin will
-      automatically tag the image as `latest`. All other event types and branches are ignored.
     type: bool
     defaultvalue: false
     required: false
