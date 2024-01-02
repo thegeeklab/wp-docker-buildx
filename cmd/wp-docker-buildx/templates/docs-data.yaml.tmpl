@@ -13,6 +13,6 @@ properties:
     {{- with $v.Default }}
     defaultvalue: {{ . }}
     {{- end }}
-    required: {{ $v.Required }}
+    required: {{ default false $v.Required }}
 {{ end -}}
 {{ end -}}
