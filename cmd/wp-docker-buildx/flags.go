@@ -302,7 +302,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		&cli.StringSliceFlag{
 			Name:        "add-host",
 			EnvVars:     []string{"PLUGIN_ADD_HOST"},
-			Usage:       "additional host:ip mapping",
+			Usage:       "additional `host:ip` mapping",
 			Destination: &settings.Build.AddHost,
 			Category:    category,
 		},
