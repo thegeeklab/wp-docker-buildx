@@ -31,7 +31,7 @@ properties:
       ```yaml
       steps:
         - name: Build
-          image: quay.io/thegeeklab/wp-docker-buildx:23
+          image: quay.io/thegeeklab/wp-docker-buildx
           settings:
             repo: example/repo
             buildkit_config: |
@@ -50,7 +50,7 @@ properties:
       ```yaml
       steps:
         - name: Build
-          image: thegeeklab/wp-docker-buildx:23
+          image: quay.io/thegeeklab/wp-docker-buildx
           settings:
             repo: example/repo
             cache_from:
@@ -293,7 +293,7 @@ properties:
       ```yaml
       steps:
         - name: Build
-          image: thegeeklab/wp-docker-buildx:23
+          image: quay.io/thegeeklab/wp-docker-buildx
           privileged: true
           environment:
             SECURE_TOKEN:
