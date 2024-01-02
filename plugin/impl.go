@@ -11,6 +11,7 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-plugin-go/tag"
+	"github.com/thegeeklab/wp-plugin-go/trace"
 	"github.com/thegeeklab/wp-plugin-go/types"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
@@ -162,7 +163,7 @@ func (p *Plugin) Execute() error {
 
 		versionCmd.Stdout = os.Stdout
 		versionCmd.Stderr = os.Stderr
-		trace(versionCmd)
+		trace.Cmd(versionCmd)
 
 		return versionCmd.Run()
 	}
@@ -184,7 +185,7 @@ func (p *Plugin) Execute() error {
 	for _, cmd := range batchCmd {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
-		trace(cmd)
+		trace.Cmd(cmd)
 
 		err := cmd.Run()
 		if err != nil {
