@@ -24,6 +24,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_MIRROR", "DOCKER_PLUGIN_MIRROR"},
 			Usage:       "registry mirror to pull images",
 			Destination: &settings.Daemon.Mirror,
+			DefaultText: "$DOCKER_PLUGIN_MIRROR",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -263,6 +264,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_USERNAME", "DOCKER_USERNAME"},
 			Usage:       "username for registry authentication",
 			Destination: &settings.Login.Username,
+			DefaultText: "$DOCKER_USERNAME",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -270,6 +272,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_PASSWORD", "DOCKER_PASSWORD"},
 			Usage:       "password for registry authentication",
 			Destination: &settings.Login.Password,
+			DefaultText: "$DOCKER_PASSWORD",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -277,6 +280,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_EMAIL", "DOCKER_EMAIL"},
 			Usage:       "email address for registry authentication",
 			Destination: &settings.Login.Email,
+			DefaultText: "$DOCKER_EMAIL",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -284,6 +288,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_CONFIG", "DOCKER_PLUGIN_CONFIG"},
 			Usage:       "content of the docker daemon json config",
 			Destination: &settings.Login.Config,
+			DefaultText: "$DOCKER_PLUGIN_CONFIG",
 			Category:    category,
 		},
 		&cli.BoolFlag{

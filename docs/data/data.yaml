@@ -78,6 +78,7 @@ properties:
     description: |
       Content of the docker daemon json config.
     type: string
+    defaultvalue: $DOCKER_PLUGIN_CONFIG
     required: false
 
   - name: containerfile
@@ -151,6 +152,7 @@ properties:
     description: |
       Email address for registry authentication.
     type: string
+    defaultvalue: $DOCKER_EMAIL
     required: false
 
   - name: experimental
@@ -203,6 +205,7 @@ properties:
     description: |
       Registry mirror to pull images.
     type: string
+    defaultvalue: $DOCKER_PLUGIN_MIRROR
     required: false
 
   - name: mtu
@@ -235,6 +238,7 @@ properties:
     description: |
       Password for registry authentication.
     type: string
+    defaultvalue: $DOCKER_PASSWORD
     required: false
 
   - name: platforms
@@ -342,4 +346,5 @@ properties:
     description: |
       Username for registry authentication.
     type: string
+    defaultvalue: $DOCKER_USERNAME
     required: false
