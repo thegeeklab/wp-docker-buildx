@@ -17,7 +17,7 @@ properties:
       When the event type is `push` and the target branch is your default branch, the plugin will
       automatically tag the image as `latest`. All other event types and branches are ignored.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: auto_tag_suffix
@@ -91,28 +91,28 @@ properties:
     description: |
       Enable compression of the build context using gzip.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: config
     description: |
       Content of the docker daemon json config.
     type: string
-    defaultvalue: $DOCKER_PLUGIN_CONFIG
+    defaultValue: $DOCKER_PLUGIN_CONFIG
     required: false
 
   - name: containerfile
     description: |
       Containerfile to use for the image build.
     type: string
-    defaultvalue: "Containerfile"
+    defaultValue: "Containerfile"
     required: false
 
   - name: context
     description: |
       Path of the build context.
     type: string
-    defaultvalue: "."
+    defaultValue: "."
     required: false
 
   - name: custom_dns
@@ -131,35 +131,35 @@ properties:
     description: |
       Disable the startup of the docker daemon.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: debug
     description: |
       Enable verbose debug mode for the docker daemon.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: dry_run
     description: |
       Disable docker push.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: email
     description: |
       Email address for registry authentication.
     type: string
-    defaultvalue: $DOCKER_EMAIL
+    defaultValue: $DOCKER_EMAIL
     required: false
 
   - name: experimental
     description: |
       Enable docker daemon experimental mode.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: extra_tags
@@ -176,14 +176,14 @@ properties:
     description: |
       Allow the docker daemon to use insecure registries.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: ipv6
     description: |
       Enable docker daemon IPv6 support.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: labels
@@ -205,7 +205,7 @@ properties:
     description: |
       Registry mirror to pull images.
     type: string
-    defaultvalue: $DOCKER_PLUGIN_MIRROR
+    defaultValue: $DOCKER_PLUGIN_MIRROR
     required: false
 
   - name: mtu
@@ -224,7 +224,7 @@ properties:
     description: |
       Disable the usage of cached intermediate containers.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: output
@@ -238,7 +238,7 @@ properties:
     description: |
       Password for registry authentication.
     type: string
-    defaultvalue: $DOCKER_PASSWORD
+    defaultValue: $DOCKER_PASSWORD
     required: false
 
   - name: platforms
@@ -257,21 +257,21 @@ properties:
     description: |
       Enforce to pull base image at build time.
     type: bool
-    defaultvalue: true
+    defaultValue: true
     required: false
 
   - name: quiet
     description: |
       Enable suppression of the build output.
     type: bool
-    defaultvalue: false
+    defaultValue: false
     required: false
 
   - name: registry
     description: |
       Docker registry to authenticate with.
     type: string
-    defaultvalue: "https://index.docker.io/v1/"
+    defaultValue: "https://index.docker.io/v1/"
     required: false
 
   - name: repo
@@ -325,7 +325,7 @@ properties:
     description: |
       Docker daemon storage path.
     type: string
-    defaultvalue: "/var/lib/docker"
+    defaultValue: "/var/lib/docker"
     required: false
 
   - name: tags
@@ -346,5 +346,5 @@ properties:
     description: |
       Username for registry authentication.
     type: string
-    defaultvalue: $DOCKER_USERNAME
+    defaultValue: $DOCKER_USERNAME
     required: false
