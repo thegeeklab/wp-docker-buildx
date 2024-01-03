@@ -5,6 +5,8 @@ import (
 	"net"
 	"os"
 	"os/exec"
+
+	"github.com/thegeeklab/wp-plugin-go/trace"
 )
 
 func (p Plugin) startCoredns() {
@@ -18,7 +20,7 @@ func (p Plugin) startCoredns() {
 	}
 
 	go func() {
-		trace(cmd)
+		trace.Cmd(cmd)
 		_ = cmd.Run()
 	}()
 }

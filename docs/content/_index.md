@@ -30,7 +30,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/wp-docker-buildx:23
+    image: quay.io/thegeeklab/wp-docker-buildx
     privileged: true
     settings:
       username: octocat
@@ -61,7 +61,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/wp-docker-buildx:23
+    image: quay.io/thegeeklab/wp-docker-buildx
     privileged: true
     settings:
       registry: ghcr.io
@@ -79,7 +79,7 @@ name: default
 
 steps:
   - name: docker
-    image: thegeeklab/wp-docker-buildx:23
+    image: quay.io/thegeeklab/wp-docker-buildx
     privileged: true
     environment:
       AWS_ACCESS_KEY_ID:

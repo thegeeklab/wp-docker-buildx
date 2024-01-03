@@ -9,6 +9,7 @@ import (
 // settingsFlags has the cli.Flags for the plugin.Settings.
 //
 //nolint:maintidx
+//go:generate go run docs.go flags.go
 func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 	return []cli.Flag{
 		&cli.BoolFlag{
@@ -23,6 +24,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_MIRROR", "DOCKER_PLUGIN_MIRROR"},
 			Usage:       "registry mirror to pull images",
 			Destination: &settings.Daemon.Mirror,
+			DefaultText: "$DOCKER_PLUGIN_MIRROR",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -43,28 +45,28 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "daemon.bip",
 			EnvVars:     []string{"PLUGIN_BIP"},
-			Usage:       "allow the docker daemon to bride ip address",
+			Usage:       "allow the docker daemon to bride IP address",
 			Destination: &settings.Daemon.Bip,
 			Category:    category,
 		},
 		&cli.StringFlag{
 			Name:        "daemon.mtu",
 			EnvVars:     []string{"PLUGIN_MTU"},
-			Usage:       "docker daemon custom mtu setting",
+			Usage:       "docker daemon custom MTU setting",
 			Destination: &settings.Daemon.MTU,
 			Category:    category,
 		},
 		&cli.StringSliceFlag{
 			Name:        "daemon.dns",
 			EnvVars:     []string{"PLUGIN_CUSTOM_DNS"},
-			Usage:       "custom docker daemon dns server",
+			Usage:       "custom docker daemon DNS server",
 			Destination: &settings.Daemon.DNS,
 			Category:    category,
 		},
 		&cli.StringSliceFlag{
 			Name:        "daemon.dns-search",
 			EnvVars:     []string{"PLUGIN_CUSTOM_DNS_SEARCH"},
-			Usage:       "custom docker daemon dns search domain",
+			Usage:       "custom docker daemon DNS search domain",
 			Destination: &settings.Daemon.DNSSearch,
 			Category:    category,
 		},
@@ -147,7 +149,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		},
 		&cli.StringSliceFlag{
 			Name:        "tags",
-			EnvVars:     []string{"PLUGIN_TAG", "PLUGIN_TAGS"},
+			EnvVars:     []string{"PLUGIN_TAGS", "PLUGIN_TAG"},
 			Usage:       "repository tags to use for the image",
 			FilePath:    ".tags",
 			Destination: &settings.Build.Tags,
@@ -155,7 +157,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		},
 		&cli.BoolFlag{
 			Name:        "tags.auto",
-			EnvVars:     []string{"PLUGIN_DEFAULT_TAGS", "PLUGIN_AUTO_TAG"},
+			EnvVars:     []string{"PLUGIN_AUTO_TAG", "PLUGIN_DEFAULT_TAGS"},
 			Usage:       "generate tag names automatically based on git branch and git tag",
 			Value:       false,
 			Destination: &settings.Build.TagsAuto,
@@ -163,7 +165,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:        "tags.suffix",
-			EnvVars:     []string{"PLUGIN_DEFAULT_SUFFIX", "PLUGIN_AUTO_TAG_SUFFIX"},
+			EnvVars:     []string{"PLUGIN_AUTO_TAG_SUFFIX", "PLUGIN_DEFAULT_SUFFIX"},
 			Usage:       "generate tag names with the given suffix",
 			Destination: &settings.Build.TagsSuffix,
 			Category:    category,
@@ -262,6 +264,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_USERNAME", "DOCKER_USERNAME"},
 			Usage:       "username for registry authentication",
 			Destination: &settings.Login.Username,
+			DefaultText: "$DOCKER_USERNAME",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -269,6 +272,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_PASSWORD", "DOCKER_PASSWORD"},
 			Usage:       "password for registry authentication",
 			Destination: &settings.Login.Password,
+			DefaultText: "$DOCKER_PASSWORD",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -276,6 +280,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_EMAIL", "DOCKER_EMAIL"},
 			Usage:       "email address for registry authentication",
 			Destination: &settings.Login.Email,
+			DefaultText: "$DOCKER_EMAIL",
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -283,6 +288,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_CONFIG", "DOCKER_PLUGIN_CONFIG"},
 			Usage:       "content of the docker daemon json config",
 			Destination: &settings.Login.Config,
+			DefaultText: "$DOCKER_PLUGIN_CONFIG",
 			Category:    category,
 		},
 		&cli.BoolFlag{
@@ -296,7 +302,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		&cli.StringSliceFlag{
 			Name:        "add-host",
 			EnvVars:     []string{"PLUGIN_ADD_HOST"},
-			Usage:       "additional host:ip mapping",
+			Usage:       "additional `host:ip` mapping",
 			Destination: &settings.Build.AddHost,
 			Category:    category,
 		},
@@ -324,7 +330,7 @@ func settingsFlags(settings *plugin.Settings, category string) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "sbom",
 			EnvVars:     []string{"PLUGIN_SBOM"},
-			Usage:       "generates sbom attestation for the build",
+			Usage:       "generates SBOM attestation for the build",
 			Destination: &settings.Build.SBOM,
 			Category:    category,
 		},

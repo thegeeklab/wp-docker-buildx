@@ -259,9 +259,3 @@ func commandDaemon(daemon Daemon) *execabs.Cmd {
 
 	return execabs.Command(dockerdBin, args...)
 }
-
-// trace writes each command to stdout with the command wrapped in an xml
-// tag so that it can be extracted and displayed in the logs.
-func trace(cmd *execabs.Cmd) {
-	fmt.Fprintf(os.Stdout, "+ %s\n", strings.Join(cmd.Args, " "))
-}
