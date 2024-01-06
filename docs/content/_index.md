@@ -8,7 +8,7 @@ title: wp-docker-buildx
 [![Go Report Card](https://goreportcard.com/badge/github.com/thegeeklab/wp-docker-buildx)](https://goreportcard.com/report/github.com/thegeeklab/wp-docker-buildx)
 [![GitHub contributors](https://img.shields.io/github/contributors/thegeeklab/wp-docker-buildx)](https://github.com/thegeeklab/wp-docker-buildx/graphs/contributors)
 [![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/thegeeklab/wp-docker-buildx)
-[![License: MIT](https://img.shields.io/github/license/thegeeklab/wp-docker-buildx)](https://github.com/thegeeklab/wp-docker-buildx/blob/main/LICENSE)
+[![License: Apache-2.0](https://img.shields.io/github/license/thegeeklab/wp-docker-buildx)](https://github.com/thegeeklab/wp-docker-buildx/blob/main/LICENSE)
 
 Woodpecker CI plugin to build multiarch OCI images with buildx.
 
