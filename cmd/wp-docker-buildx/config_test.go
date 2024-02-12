@@ -36,7 +36,7 @@ func Test_pluginOptions(t *testing.T) {
 		options := wp.Options{
 			Name:    "wp-docker-buildx",
 			Flags:   settingsFlags(settings, wp.FlagsPluginCategory),
-			Execute: func(ctx context.Context) error { return nil },
+			Execute: func(_ context.Context) error { return nil },
 		}
 
 		got := plugin.New(options, settings)
