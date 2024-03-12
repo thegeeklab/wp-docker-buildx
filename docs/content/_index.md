@@ -25,16 +25,13 @@ Be aware that the this plugin requires [privileged](https://woodpecker-ci.org/do
 {{< /hint >}}
 
 ```yaml
-kind: pipeline
-name: default
-
 steps:
   - name: docker
     image: quay.io/thegeeklab/wp-docker-buildx
     privileged: true
     settings:
       username: octocat
-      password: secure
+      password: random-secret
       repo: octocat/example
       tags: latest
 ```
@@ -56,9 +53,6 @@ If the created image is to be pushed to registries other than the default Docker
 **GHCR:**
 
 ```yaml
-kind: pipeline
-name: default
-
 steps:
   - name: docker
     image: quay.io/thegeeklab/wp-docker-buildx
@@ -74,9 +68,6 @@ steps:
 **AWS ECR:**
 
 ```yaml
-kind: pipeline
-name: default
-
 steps:
   - name: docker
     image: quay.io/thegeeklab/wp-docker-buildx
