@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/rs/zerolog v1.32.0
-	github.com/thegeeklab/wp-plugin-go v1.6.1
+	github.com/thegeeklab/wp-plugin-go v1.7.0
 	github.com/urfave/cli/v2 v2.27.1
 	golang.org/x/sys v0.18.0
 )
