@@ -7,7 +7,7 @@ require (
 	github.com/rs/zerolog v1.32.0
 	github.com/thegeeklab/wp-plugin-go v1.7.0
 	github.com/urfave/cli/v2 v2.27.1
-	golang.org/x/sys v0.18.0
+	golang.org/x/sys v0.19.0
 )
 
 require (
