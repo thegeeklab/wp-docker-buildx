@@ -1,7 +1,7 @@
 package plugin
 
 import (
-	wp "github.com/thegeeklab/wp-plugin-go/plugin"
+	wp "github.com/thegeeklab/wp-plugin-go/v2/plugin"
 	"github.com/urfave/cli/v2"
 )
 

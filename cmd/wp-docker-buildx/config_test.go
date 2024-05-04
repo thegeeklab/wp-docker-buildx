@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/thegeeklab/wp-docker-buildx/plugin"
-	wp "github.com/thegeeklab/wp-plugin-go/plugin"
+	wp "github.com/thegeeklab/wp-plugin-go/v2/plugin"
 )
 
 func Test_pluginOptions(t *testing.T) {

@@ -10,9 +10,9 @@ import (
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
-	"github.com/thegeeklab/wp-plugin-go/tag"
-	"github.com/thegeeklab/wp-plugin-go/trace"
-	"github.com/thegeeklab/wp-plugin-go/types"
+	"github.com/thegeeklab/wp-plugin-go/v2/tag"
+	"github.com/thegeeklab/wp-plugin-go/v2/trace"
+	"github.com/thegeeklab/wp-plugin-go/v2/types"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
 )

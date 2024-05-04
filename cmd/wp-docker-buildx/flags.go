@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/thegeeklab/wp-docker-buildx/plugin"
-	"github.com/thegeeklab/wp-plugin-go/types"
+	"github.com/thegeeklab/wp-plugin-go/v2/types"
 	"github.com/urfave/cli/v2"
 )
 
