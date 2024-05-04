@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/thegeeklab/wp-plugin-go/trace"
+	"github.com/thegeeklab/wp-plugin-go/v2/trace"
 )
 
 func (p Plugin) startCoredns() {

@@ -11,7 +11,7 @@ import (
 )
 
 // helper function to create the docker login command.
-func commandLogin(login Login) *execabs.Cmd {
+func commandLogin(login Login) *Cmd {
 	if login.Email != "" {
 		return commandLoginEmail(login)
 	}
@@ -23,12 +23,12 @@ func commandLogin(login Login) *execabs.Cmd {
 		login.Registry,
 	}
 
-	return execabs.Command(
-		dockerBin, args...,
-	)
+	return &Cmd{
+		Cmd: execabs.Command(dockerBin, args...),
+	}
 }
 
-func commandLoginEmail(login Login) *execabs.Cmd {
+func commandLoginEmail(login Login) *Cmd {
 	args := []string{
 		"login",
 		"-u", login.Username,
@@ -37,22 +37,26 @@ func commandLoginEmail(login Login) *execabs.Cmd {
 		login.Registry,
 	}
 
-	return execabs.Command(
-		dockerBin, args...,
-	)
+	return &Cmd{
+		Cmd: execabs.Command(dockerBin, args...),
+	}
 }
 
 // helper function to create the docker info command.
-func commandVersion() *execabs.Cmd {
-	return execabs.Command(dockerBin, "version")
+func commandVersion() *Cmd {
+	return &Cmd{
+		Cmd: execabs.Command(dockerBin, "version"),
+	}
 }
 
 // helper function to create the docker info command.
-func commandInfo() *execabs.Cmd {
-	return execabs.Command(dockerBin, "info")
+func commandInfo() *Cmd {
+	return &Cmd{
+		Cmd: execabs.Command(dockerBin, "info"),
+	}
 }
 
-func commandBuilder(daemon Daemon) *execabs.Cmd {
+func commandBuilder(daemon Daemon) *Cmd {
 	args := []string{
 		"buildx",
 		"create",
@@ -63,15 +67,19 @@ func commandBuilder(daemon Daemon) *execabs.Cmd {
 		args = append(args, "--config", buildkitConfig)
 	}
 
-	return execabs.Command(dockerBin, args...)
+	return &Cmd{
+		Cmd: execabs.Command(dockerBin, args...),
+	}
 }
 
-func commandBuildx() *execabs.Cmd {
-	return execabs.Command(dockerBin, "buildx", "ls")
+func commandBuildx() *Cmd {
+	return &Cmd{
+		Cmd: execabs.Command(dockerBin, "buildx", "ls"),
+	}
 }
 
 // helper function to create the docker build command.
-func commandBuild(build Build, dryrun bool) *execabs.Cmd {
+func commandBuild(build Build, dryrun bool) *Cmd {
 	args := []string{
 		"buildx",
 		"build",
@@ -164,7 +172,9 @@ func commandBuild(build Build, dryrun bool) *execabs.Cmd {
 		args = append(args, "--secret", secret)
 	}
 
-	return execabs.Command(dockerBin, args...)
+	return &Cmd{
+		Cmd: execabs.Command(dockerBin, args...),
+	}
 }
 
 // helper function to add proxy values from the environment.
@@ -211,7 +221,7 @@ func hasProxyBuildArg(build *Build, key string) bool {
 }
 
 // helper function to create the docker daemon command.
-func commandDaemon(daemon Daemon) *execabs.Cmd {
+func commandDaemon(daemon Daemon) *Cmd {
 	args := []string{
 		"--data-root", daemon.StoragePath,
 		"--host=unix:///var/run/docker.sock",
@@ -257,5 +267,7 @@ func commandDaemon(daemon Daemon) *execabs.Cmd {
 		args = append(args, "--max-concurrent-uploads", daemon.MaxConcurrentUploads)
 	}
 
-	return execabs.Command(dockerdBin, args...)
+	return &Cmd{
+		Cmd: execabs.Command(dockerdBin, args...),
+	}
 }

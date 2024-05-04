@@ -10,11 +10,10 @@ import (
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
-	"github.com/thegeeklab/wp-plugin-go/tag"
-	"github.com/thegeeklab/wp-plugin-go/trace"
-	"github.com/thegeeklab/wp-plugin-go/types"
+	"github.com/thegeeklab/wp-plugin-go/v2/tag"
+	"github.com/thegeeklab/wp-plugin-go/v2/trace"
+	"github.com/thegeeklab/wp-plugin-go/v2/types"
 	"github.com/urfave/cli/v2"
-	"golang.org/x/sys/execabs"
 )
 
 var ErrTypeAssertionFailed = errors.New("type assertion failed")
@@ -79,6 +78,8 @@ func (p *Plugin) Validate() error {
 //
 //nolint:gocognit
 func (p *Plugin) Execute() error {
+	batchCmd := make([]*Cmd, 0)
+
 	// start the Docker daemon server
 	//nolint: nestif
 	if !p.Settings.Daemon.Disabled {
@@ -163,7 +164,7 @@ func (p *Plugin) Execute() error {
 
 		versionCmd.Stdout = os.Stdout
 		versionCmd.Stderr = os.Stderr
-		trace.Cmd(versionCmd)
+		trace.Cmd(versionCmd.Cmd)
 
 		return versionCmd.Run()
 	}
@@ -175,19 +176,18 @@ func (p *Plugin) Execute() error {
 		return err
 	}
 
-	var batchCmd []*execabs.Cmd
 	batchCmd = append(batchCmd, commandInfo()) // docker info
 	batchCmd = append(batchCmd, commandBuilder(p.Settings.Daemon))
 	batchCmd = append(batchCmd, commandBuildx())
 	batchCmd = append(batchCmd, commandBuild(p.Settings.Build, p.Settings.Dryrun)) // docker build
 
 	// execute all commands in batch mode.
-	for _, cmd := range batchCmd {
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		trace.Cmd(cmd)
+	for _, bc := range batchCmd {
+		bc.Stdout = os.Stdout
+		bc.Stderr = os.Stderr
+		trace.Cmd(bc.Cmd)
 
-		err := cmd.Run()
+		err := bc.Run()
 		if err != nil {
 			return err
 		}

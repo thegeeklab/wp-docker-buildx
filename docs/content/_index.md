@@ -104,7 +104,7 @@ docker run --rm \
   -e PLUGIN_TAG=latest \
   -e PLUGIN_REPO=octocat/hello-world \
   -e CI_COMMIT_SHA=00000000 \
-  -v $(pwd):/build:z \
+  -v $(pwd)/testdata:/build:z \
   -w /build \
   --privileged \
   thegeeklab/wp-docker-buildx --dry-run

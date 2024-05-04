@@ -19,7 +19,6 @@ GOLANGCI_LINT_PACKAGE ?= github.com/golangci/golangci-lint/cmd/golangci-lint@$(G
 XGO_PACKAGE ?= src.techknowlogick.com/xgo@latest
 GOTESTSUM_PACKAGE ?= gotest.tools/gotestsum@latest
 
-GENERATE ?=
 XGO_VERSION := go-1.22.x
 XGO_TARGETS ?= linux/amd64,linux/arm64
 
@@ -65,11 +64,7 @@ lint: golangci-lint
 
 .PHONY: generate
 generate:
-	$(GO) generate $(GENERATE)
-
-.PHONY: generate-docs
-generate-docs:
-	$(GO) generate ./cmd/$(EXECUTABLE)/flags.go
+	$(GO) generate $(PACKAGES)
 
 .PHONY: test
 test:

@@ -1,15 +1,12 @@
-package main
+package plugin
 
 import (
 	"context"
 	"reflect"
 	"testing"
-
-	"github.com/thegeeklab/wp-docker-buildx/plugin"
-	wp "github.com/thegeeklab/wp-plugin-go/plugin"
 )
 
-func Test_pluginOptions(t *testing.T) {
+func TestFlags(t *testing.T) {
 	tests := []struct {
 		name string
 		envs map[string]string
@@ -32,14 +29,7 @@ func Test_pluginOptions(t *testing.T) {
 			t.Setenv(key, value)
 		}
 
-		settings := &plugin.Settings{}
-		options := wp.Options{
-			Name:    "wp-docker-buildx",
-			Flags:   settingsFlags(settings, wp.FlagsPluginCategory),
-			Execute: func(_ context.Context) error { return nil },
-		}
-
-		got := plugin.New(options, settings)
+		got := New(func(_ context.Context) error { return nil })
 
 		_ = got.App.Run([]string{"wp-docker-buildx"})
 		_ = got.FlagsFromContext()
