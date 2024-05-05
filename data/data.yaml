@@ -179,6 +179,13 @@ properties:
     defaultValue: false
     required: false
 
+  - name: insecure_skip_verify
+    description: |
+      Skip SSL verification.
+    type: bool
+    defaultValue: false
+    required: false
+
   - name: ipv6
     description: |
       Enable docker daemon IPv6 support.
@@ -190,6 +197,13 @@ properties:
     description: |
       Labels to add to image.
     type: list
+    required: false
+
+  - name: log_level
+    description: |
+      Plugin log level.
+    type: string
+    defaultValue: "info"
     required: false
 
   - name: max_concurrent_uploads
