@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/thegeeklab/wp-plugin-go/trace"
+	"github.com/thegeeklab/wp-plugin-go/v2/trace"
 )
 
 const (
@@ -25,7 +25,7 @@ func (p Plugin) startDaemon() {
 	}
 
 	go func() {
-		trace.Cmd(cmd)
+		trace.Cmd(cmd.Cmd)
 		_ = cmd.Run()
 	}()
 }
