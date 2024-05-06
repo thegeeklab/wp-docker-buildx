@@ -12,7 +12,7 @@ import (
 
 	"github.com/thegeeklab/wp-docker-buildx/plugin"
 	"github.com/thegeeklab/wp-plugin-go/v2/docs"
-	wp_template "github.com/thegeeklab/wp-plugin-go/v2/template"
+	"github.com/thegeeklab/wp-plugin-go/v2/template"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 
 	p := plugin.New(nil)
 
-	out, err := wp_template.Render(context.Background(), client, tmpl, docs.GetTemplateData(p.App))
+	out, err := template.Render(context.Background(), client, tmpl, docs.GetTemplateData(p.App))
 	if err != nil {
 		panic(err)
 	}
