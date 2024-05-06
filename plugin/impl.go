@@ -5,14 +5,15 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
+	"github.com/thegeeklab/wp-docker-buildx/docker"
+	"github.com/thegeeklab/wp-plugin-go/v2/file"
 	"github.com/thegeeklab/wp-plugin-go/v2/tag"
-	"github.com/thegeeklab/wp-plugin-go/v2/trace"
 	"github.com/thegeeklab/wp-plugin-go/v2/types"
+	"github.com/thegeeklab/wp-plugin-go/v2/util"
 	"github.com/urfave/cli/v2"
 )
 
@@ -46,7 +47,7 @@ func (p *Plugin) run(ctx context.Context) error {
 func (p *Plugin) Validate() error {
 	p.Settings.Build.Branch = p.Metadata.Repository.Branch
 	p.Settings.Build.Ref = p.Metadata.Curr.Ref
-	p.Settings.Daemon.Registry = p.Settings.Login.Registry
+	p.Settings.Daemon.Registry = p.Settings.Registry.Address
 
 	if p.Settings.Build.TagsAuto {
 		// return true if tag event or default branch
@@ -75,24 +76,29 @@ func (p *Plugin) Validate() error {
 }
 
 // Execute provides the implementation of the plugin.
-//
-//nolint:gocognit
 func (p *Plugin) Execute() error {
-	batchCmd := make([]*Cmd, 0)
+	var err error
+
+	homeDir := util.GetUserHomeDir()
+	batchCmd := make([]*types.Cmd, 0)
 
 	// start the Docker daemon server
 	//nolint: nestif
 	if !p.Settings.Daemon.Disabled {
 		// If no custom DNS value set start internal DNS server
 		if len(p.Settings.Daemon.DNS.Value()) == 0 {
-			ip, err := getContainerIP()
+			ip, err := GetContainerIP()
 			if err != nil {
 				log.Warn().Msgf("error detecting IP address: %v", err)
 			}
 
 			if ip != "" {
 				log.Debug().Msgf("discovered IP address: %v", ip)
-				p.startCoredns()
+
+				cmd := p.Settings.Daemon.StartCoreDNS()
+				go func() {
+					_ = cmd.Run()
+				}()
 
 				if err := p.Settings.Daemon.DNS.Set(ip); err != nil {
 					return fmt.Errorf("error setting daemon dns: %w", err)
@@ -100,13 +106,16 @@ func (p *Plugin) Execute() error {
 			}
 		}
 
-		p.startDaemon()
+		cmd := p.Settings.Daemon.Start()
+		go func() {
+			_ = cmd.Run()
+		}()
 	}
 
 	// poll the docker daemon until it is started. This ensures the daemon is
 	// ready to accept connections before we proceed.
 	for i := 0; i < 15; i++ {
-		cmd := commandInfo()
+		cmd := docker.Info()
 
 		err := cmd.Run()
 		if err == nil {
@@ -116,57 +125,40 @@ func (p *Plugin) Execute() error {
 		time.Sleep(time.Second * 1)
 	}
 
-	// Create Auth Config File
-	if p.Settings.Login.Config != "" {
-		if err := os.MkdirAll(dockerHome, strictFilePerm); err != nil {
-			return fmt.Errorf("failed to create docker home: %w", err)
-		}
-
-		path := filepath.Join(dockerHome, "config.json")
-
-		err := os.WriteFile(path, []byte(p.Settings.Login.Config), strictFilePerm)
-		if err != nil {
-			return fmt.Errorf("error writing config.json: %w", err)
+	if p.Settings.Registry.Config != "" {
+		if err := WriteDockerConf(homeDir, p.Settings.Registry.Config); err != nil {
+			return fmt.Errorf("error writing docker config: %w", err)
 		}
 	}
 
-	// login to the Docker registry
-	if p.Settings.Login.Password != "" {
-		cmd := commandLogin(p.Settings.Login)
-
-		err := cmd.Run()
-		if err != nil {
+	if p.Settings.Registry.Password != "" {
+		if err := p.Settings.Registry.Login().Run(); err != nil {
 			return fmt.Errorf("error authenticating: %w", err)
 		}
 	}
 
-	if p.Settings.Daemon.BuildkitConfig != "" {
-		err := os.WriteFile(buildkitConfig, []byte(p.Settings.Daemon.BuildkitConfig), strictFilePerm)
-		if err != nil {
-			return fmt.Errorf("error writing buildkit.toml: %w", err)
+	buildkitConf := p.Settings.BuildkitConfig
+	if buildkitConf != "" {
+		if p.Settings.Daemon.BuildkitConfigFile, err = file.WriteTmpFile("buildkit.toml", buildkitConf); err != nil {
+			return fmt.Errorf("error writing buildkit config: %w", err)
 		}
+
+		defer os.Remove(p.Settings.Daemon.BuildkitConfigFile)
 	}
 
 	switch {
-	case p.Settings.Login.Password != "":
+	case p.Settings.Registry.Password != "":
 		log.Info().Msgf("Detected registry credentials")
-	case p.Settings.Login.Config != "":
+	case p.Settings.Registry.Config != "":
 		log.Info().Msgf("Detected registry credentials file")
 	default:
 		log.Info().Msgf("Registry credentials or Docker config not provided. Guest mode enabled.")
 	}
 
-	// add proxy build args
-	addProxyBuildArgs(&p.Settings.Build)
+	p.Settings.Build.AddProxyBuildArgs()
 
 	backoffOps := func() error {
-		versionCmd := commandVersion() // docker version
-
-		versionCmd.Stdout = os.Stdout
-		versionCmd.Stderr = os.Stderr
-		trace.Cmd(versionCmd.Cmd)
-
-		return versionCmd.Run()
+		return docker.Version().Run()
 	}
 	backoffLog := func(err error, delay time.Duration) {
 		log.Error().Msgf("failed to run docker version command: %v: retry in %s", err, delay.Truncate(time.Second))
@@ -176,19 +168,13 @@ func (p *Plugin) Execute() error {
 		return err
 	}
 
-	batchCmd = append(batchCmd, commandInfo()) // docker info
-	batchCmd = append(batchCmd, commandBuilder(p.Settings.Daemon))
-	batchCmd = append(batchCmd, commandBuildx())
-	batchCmd = append(batchCmd, commandBuild(p.Settings.Build, p.Settings.Dryrun)) // docker build
+	batchCmd = append(batchCmd, docker.Info())
+	batchCmd = append(batchCmd, p.Settings.Daemon.CreateBuilder())
+	batchCmd = append(batchCmd, p.Settings.Daemon.ListBuilder())
+	batchCmd = append(batchCmd, p.Settings.Build.Run())
 
-	// execute all commands in batch mode.
-	for _, bc := range batchCmd {
-		bc.Stdout = os.Stdout
-		bc.Stderr = os.Stderr
-		trace.Cmd(bc.Cmd)
-
-		err := bc.Run()
-		if err != nil {
+	for _, cmd := range batchCmd {
+		if err := cmd.Run(); err != nil {
 			return err
 		}
 	}

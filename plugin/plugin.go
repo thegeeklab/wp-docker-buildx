@@ -3,10 +3,10 @@ package plugin
 import (
 	"fmt"
 
+	"github.com/thegeeklab/wp-docker-buildx/docker"
 	wp "github.com/thegeeklab/wp-plugin-go/v2/plugin"
 	"github.com/thegeeklab/wp-plugin-go/v2/types"
 	"github.com/urfave/cli/v2"
-	"golang.org/x/sys/execabs"
 )
 
 //go:generate go run ../internal/docs/main.go -output=../docs/data/data-raw.yaml
@@ -19,73 +19,11 @@ type Plugin struct {
 
 // Settings for the Plugin.
 type Settings struct {
-	Daemon Daemon
-	Login  Login
-	Build  Build
-	Dryrun bool
-}
+	BuildkitConfig string
 
-// Daemon defines Docker daemon parameters.
-type Daemon struct {
-	Registry             string          // Docker registry
-	Mirror               string          // Docker registry mirror
-	Insecure             bool            // Docker daemon enable insecure registries
-	StorageDriver        string          // Docker daemon storage driver
-	StoragePath          string          // Docker daemon storage path
-	Disabled             bool            // DOcker daemon is disabled (already running)
-	Debug                bool            // Docker daemon started in debug mode
-	Bip                  string          // Docker daemon network bridge IP address
-	DNS                  cli.StringSlice // Docker daemon dns server
-	DNSSearch            cli.StringSlice // Docker daemon dns search domain
-	MTU                  string          // Docker daemon mtu setting
-	IPv6                 bool            // Docker daemon IPv6 networking
-	Experimental         bool            // Docker daemon enable experimental mode
-	BuildkitConfig       string          // Docker buildkit config
-	MaxConcurrentUploads string
-}
-
-// Login defines Docker login parameters.
-type Login struct {
-	Registry string // Docker registry address
-	Username string // Docker registry username
-	Password string // Docker registry password
-	Email    string // Docker registry email
-	Config   string // Docker Auth Config
-}
-
-// Build defines Docker build parameters.
-type Build struct {
-	Ref           string          // Git commit ref
-	Branch        string          // Git repository branch
-	Containerfile string          // Docker build Containerfile
-	Context       string          // Docker build context
-	TagsAuto      bool            // Docker build auto tag
-	TagsSuffix    string          // Docker build tags with suffix
-	Tags          cli.StringSlice // Docker build tags
-	ExtraTags     cli.StringSlice // Docker build tags including registry
-	Platforms     cli.StringSlice // Docker build target platforms
-	Args          cli.StringSlice // Docker build args
-	ArgsEnv       cli.StringSlice // Docker build args from env
-	Target        string          // Docker build target
-	Pull          bool            // Docker build pull
-	CacheFrom     []string        // Docker build cache-from
-	CacheTo       string          // Docker build cache-to
-	Compress      bool            // Docker build compress
-	Repo          string          // Docker build repository
-	NoCache       bool            // Docker build no-cache
-	AddHost       cli.StringSlice // Docker build add-host
-	Quiet         bool            // Docker build quiet
-	Output        string          // Docker build output folder
-	NamedContext  cli.StringSlice // Docker build named context
-	Labels        cli.StringSlice // Docker build labels
-	Provenance    string          // Docker build provenance attestation
-	SBOM          string          // Docker build sbom attestation
-	Secrets       []string        // Docker build secrets
-}
-
-type Cmd struct {
-	*execabs.Cmd
-	Private bool
+	Daemon   docker.Daemon
+	Registry docker.Registry
+	Build    docker.Build
 }
 
 func New(e wp.ExecuteFunc, build ...string) *Plugin {
@@ -127,7 +65,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Name:        "dry-run",
 			EnvVars:     []string{"PLUGIN_DRY_RUN"},
 			Usage:       "disable docker push",
-			Destination: &settings.Dryrun,
+			Destination: &settings.Build.Dryrun,
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -225,7 +163,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Name:        "daemon.buildkit-config",
 			EnvVars:     []string{"PLUGIN_BUILDKIT_CONFIG"},
 			Usage:       "content of the docker buildkit toml config",
-			Destination: &settings.Daemon.BuildkitConfig,
+			Destination: &settings.BuildkitConfig,
 			Category:    category,
 		},
 		&cli.StringFlag{
@@ -367,14 +305,14 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_REGISTRY", "DOCKER_REGISTRY"},
 			Usage:       "docker registry to authenticate with",
 			Value:       "https://index.docker.io/v1/",
-			Destination: &settings.Login.Registry,
+			Destination: &settings.Registry.Address,
 			Category:    category,
 		},
 		&cli.StringFlag{
 			Name:        "docker.username",
 			EnvVars:     []string{"PLUGIN_USERNAME", "DOCKER_USERNAME"},
 			Usage:       "username for registry authentication",
-			Destination: &settings.Login.Username,
+			Destination: &settings.Registry.Username,
 			DefaultText: "$DOCKER_USERNAME",
 			Category:    category,
 		},
@@ -382,7 +320,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Name:        "docker.password",
 			EnvVars:     []string{"PLUGIN_PASSWORD", "DOCKER_PASSWORD"},
 			Usage:       "password for registry authentication",
-			Destination: &settings.Login.Password,
+			Destination: &settings.Registry.Password,
 			DefaultText: "$DOCKER_PASSWORD",
 			Category:    category,
 		},
@@ -390,7 +328,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Name:        "docker.email",
 			EnvVars:     []string{"PLUGIN_EMAIL", "DOCKER_EMAIL"},
 			Usage:       "email address for registry authentication",
-			Destination: &settings.Login.Email,
+			Destination: &settings.Registry.Email,
 			DefaultText: "$DOCKER_EMAIL",
 			Category:    category,
 		},
@@ -398,7 +336,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Name:        "docker.config",
 			EnvVars:     []string{"PLUGIN_CONFIG", "DOCKER_PLUGIN_CONFIG"},
 			Usage:       "content of the docker daemon json config",
-			Destination: &settings.Login.Config,
+			Destination: &settings.Registry.Config,
 			DefaultText: "$DOCKER_PLUGIN_CONFIG",
 			Category:    category,
 		},

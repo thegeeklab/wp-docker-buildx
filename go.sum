@@ -48,8 +48,8 @@ github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
-github.com/thegeeklab/wp-plugin-go/v2 v2.0.1 h1:42kqe5U1x5Ysa9I8tDEhh+tyvfFkfXKvlb3UsigBmN4=
-github.com/thegeeklab/wp-plugin-go/v2 v2.0.1/go.mod h1:KRfDolkPSpO7Zx54Y0ofTFA7Cvd+7bHTHzYnYAo9WYg=
+github.com/thegeeklab/wp-plugin-go/v2 v2.3.0 h1:9LOdITzjxEEbgcH9yU0tDZL0dcDZzNYzbk2+hZ5QsBA=
+github.com/thegeeklab/wp-plugin-go/v2 v2.3.0/go.mod h1:I/3M/4OPvr4FFS+s0aaImpX1llA/lS2KC6Bnp+qzsCs=
 github.com/urfave/cli/v2 v2.27.2 h1:6e0H+AkS+zDckwPCUrZkKX38mRaau4nL2uipkJpbkcI=
 github.com/urfave/cli/v2 v2.27.2/go.mod h1:g0+79LmHHATl7DAcHO99smiR/T7uGLw84w8Y42x+4eM=
 github.com/xrash/smetrics v0.0.0-20240312152122-5f08fbb34913 h1:+qGGcbkzsfDQNPPe9UDgpxAWQrhbbBXOYJFQDq/dtJw=
