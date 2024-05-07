@@ -76,6 +76,8 @@ func (p *Plugin) Validate() error {
 }
 
 // Execute provides the implementation of the plugin.
+//
+//nolint:gocognit
 func (p *Plugin) Execute() error {
 	var err error
 
@@ -174,6 +176,10 @@ func (p *Plugin) Execute() error {
 	batchCmd = append(batchCmd, p.Settings.Build.Run())
 
 	for _, cmd := range batchCmd {
+		if cmd == nil {
+			continue
+		}
+
 		if err := cmd.Run(); err != nil {
 			return err
 		}
