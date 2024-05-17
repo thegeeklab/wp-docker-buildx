@@ -1,11 +1,10 @@
 package docker
 
 import (
-	"os/exec"
+	"os"
 
-	"github.com/thegeeklab/wp-plugin-go/v2/types"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v3/exec"
 	"github.com/urfave/cli/v2"
-	"golang.org/x/sys/execabs"
 )
 
 const dockerdBin = "/usr/local/bin/dockerd"
@@ -30,7 +29,7 @@ type Daemon struct {
 }
 
 // helper function to create the docker daemon command.
-func (d *Daemon) Start() *types.Cmd {
+func (d *Daemon) Start() *plugin_exec.Cmd {
 	args := []string{
 		"--data-root", d.StoragePath,
 		"--host=unix:///var/run/docker.sock",
@@ -76,13 +75,17 @@ func (d *Daemon) Start() *types.Cmd {
 		args = append(args, "--max-concurrent-uploads", d.MaxConcurrentUploads)
 	}
 
-	return &types.Cmd{
-		Cmd:     execabs.Command(dockerdBin, args...),
-		Private: !d.Debug,
+	cmd := plugin_exec.Command(dockerdBin, args...)
+
+	if d.Debug {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
 	}
+
+	return cmd
 }
 
-func (d *Daemon) CreateBuilder() *types.Cmd {
+func (d *Daemon) CreateBuilder() *plugin_exec.Cmd {
 	args := []string{
 		"buildx",
 		"create",
@@ -93,20 +96,28 @@ func (d *Daemon) CreateBuilder() *types.Cmd {
 		args = append(args, "--config", d.BuildkitConfigFile)
 	}
 
-	return &types.Cmd{
-		Cmd: execabs.Command(dockerBin, args...),
-	}
+	cmd := plugin_exec.Command(dockerBin, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd
 }
 
-func (d *Daemon) ListBuilder() *types.Cmd {
-	return &types.Cmd{
-		Cmd: execabs.Command(dockerBin, "buildx", "ls"),
-	}
+func (d *Daemon) ListBuilder() *plugin_exec.Cmd {
+	cmd := plugin_exec.Command(dockerBin, "buildx", "ls")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd
 }
 
-func (d *Daemon) StartCoreDNS() *types.Cmd {
-	return &types.Cmd{
-		Cmd:     exec.Command("coredns", "-conf", "/etc/coredns/Corefile"),
-		Private: !d.Debug,
+func (d *Daemon) StartCoreDNS() *plugin_exec.Cmd {
+	cmd := plugin_exec.Command("coredns", "-conf", "/etc/coredns/Corefile")
+
+	if d.Debug {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
 	}
+
+	return cmd
 }

@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	wp "github.com/thegeeklab/wp-plugin-go/v2/plugin"
-	"github.com/thegeeklab/wp-plugin-go/v2/types"
+	plugin_base "github.com/thegeeklab/wp-plugin-go/v3/plugin"
+	plugin_types "github.com/thegeeklab/wp-plugin-go/v3/types"
 	"github.com/urfave/cli/v2"
 )
 
@@ -13,7 +13,7 @@ import (
 
 // Plugin implements provide the plugin.
 type Plugin struct {
-	*wp.Plugin
+	*plugin_base.Plugin
 	Settings *Settings
 }
 
@@ -26,15 +26,15 @@ type Settings struct {
 	Build    docker.Build
 }
 
-func New(e wp.ExecuteFunc, build ...string) *Plugin {
+func New(e plugin_base.ExecuteFunc, build ...string) *Plugin {
 	p := &Plugin{
 		Settings: &Settings{},
 	}
 
-	options := wp.Options{
+	options := plugin_base.Options{
 		Name:                "wp-docker-buildx",
 		Description:         "Build multiarch OCI images with buildx",
-		Flags:               Flags(p.Settings, wp.FlagsPluginCategory),
+		Flags:               Flags(p.Settings, plugin_base.FlagsPluginCategory),
 		Execute:             p.run,
 		HideWoodpeckerFlags: true,
 	}
@@ -51,7 +51,7 @@ func New(e wp.ExecuteFunc, build ...string) *Plugin {
 		options.Execute = e
 	}
 
-	p.Plugin = wp.New(options)
+	p.Plugin = plugin_base.New(options)
 
 	return p
 }
@@ -267,7 +267,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Name:     "cache-from",
 			EnvVars:  []string{"PLUGIN_CACHE_FROM"},
 			Usage:    "images to consider as cache sources",
-			Value:    &types.StringSliceFlag{},
+			Value:    &plugin_types.StringSliceFlag{},
 			Category: category,
 		},
 		&cli.StringFlag{
@@ -387,7 +387,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Name:     "secrets",
 			EnvVars:  []string{"PLUGIN_SECRETS"},
 			Usage:    "exposes secrets to the build",
-			Value:    &types.StringSliceFlag{},
+			Value:    &plugin_types.StringSliceFlag{},
 			Category: category,
 		},
 	}

@@ -6,9 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/thegeeklab/wp-plugin-go/v2/types"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v3/exec"
 	"github.com/urfave/cli/v2"
-	"golang.org/x/sys/execabs"
 )
 
 const dockerBin = "/usr/local/bin/docker"
@@ -54,7 +53,7 @@ type Build struct {
 }
 
 // helper function to create the docker login command.
-func (r *Registry) Login() *types.Cmd {
+func (r *Registry) Login() *plugin_exec.Cmd {
 	args := []string{
 		"login",
 		"-u", r.Username,
@@ -67,27 +66,33 @@ func (r *Registry) Login() *types.Cmd {
 
 	args = append(args, r.Address)
 
-	return &types.Cmd{
-		Cmd: execabs.Command(dockerBin, args...),
-	}
+	cmd := plugin_exec.Command(dockerBin, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd
 }
 
 // helper function to create the docker info command.
-func Version() *types.Cmd {
-	return &types.Cmd{
-		Cmd: execabs.Command(dockerBin, "version"),
-	}
+func Version() *plugin_exec.Cmd {
+	cmd := plugin_exec.Command(dockerBin, "version")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd
 }
 
 // helper function to create the docker info command.
-func Info() *types.Cmd {
-	return &types.Cmd{
-		Cmd: execabs.Command(dockerBin, "info"),
-	}
+func Info() *plugin_exec.Cmd {
+	cmd := plugin_exec.Command(dockerBin, "info")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd
 }
 
 // helper function to create the docker build command.
-func (b *Build) Run() *types.Cmd {
+func (b *Build) Run() *plugin_exec.Cmd {
 	args := []string{
 		"buildx",
 		"build",
@@ -180,9 +185,11 @@ func (b *Build) Run() *types.Cmd {
 		args = append(args, "--secret", secret)
 	}
 
-	return &types.Cmd{
-		Cmd: execabs.Command(dockerBin, args...),
-	}
+	cmd := plugin_exec.Command(dockerBin, args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	return cmd
 }
 
 // helper function to add proxy values from the environment.
