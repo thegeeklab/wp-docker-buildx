@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/thegeeklab/wp-docker-buildx/plugin"
-	"github.com/thegeeklab/wp-plugin-go/v2/docs"
-	"github.com/thegeeklab/wp-plugin-go/v2/template"
+	"github.com/thegeeklab/wp-plugin-go/v3/docs"
+	"github.com/thegeeklab/wp-plugin-go/v3/template"
 )
 
 func main() {

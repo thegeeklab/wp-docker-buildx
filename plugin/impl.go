@@ -10,10 +10,11 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	"github.com/thegeeklab/wp-plugin-go/v2/file"
-	"github.com/thegeeklab/wp-plugin-go/v2/tag"
-	"github.com/thegeeklab/wp-plugin-go/v2/types"
-	"github.com/thegeeklab/wp-plugin-go/v2/util"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v3/exec"
+	plugin_file "github.com/thegeeklab/wp-plugin-go/v3/file"
+	plugin_tag "github.com/thegeeklab/wp-plugin-go/v3/tag"
+	"github.com/thegeeklab/wp-plugin-go/v3/types"
+	plugin_util "github.com/thegeeklab/wp-plugin-go/v3/util"
 	"github.com/urfave/cli/v2"
 )
 
@@ -51,11 +52,11 @@ func (p *Plugin) Validate() error {
 
 	if p.Settings.Build.TagsAuto {
 		// return true if tag event or default branch
-		if tag.IsTaggable(
+		if plugin_tag.IsTaggable(
 			p.Settings.Build.Ref,
 			p.Settings.Build.Branch,
 		) {
-			tag, err := tag.SemverTagSuffix(
+			tag, err := plugin_tag.SemverTagSuffix(
 				p.Settings.Build.Ref,
 				p.Settings.Build.TagsSuffix,
 				true,
@@ -81,8 +82,8 @@ func (p *Plugin) Validate() error {
 func (p *Plugin) Execute() error {
 	var err error
 
-	homeDir := util.GetUserHomeDir()
-	batchCmd := make([]*types.Cmd, 0)
+	homeDir := plugin_util.GetUserHomeDir()
+	batchCmd := make([]*plugin_exec.Cmd, 0)
 
 	// start the Docker daemon server
 	//nolint: nestif
@@ -141,7 +142,7 @@ func (p *Plugin) Execute() error {
 
 	buildkitConf := p.Settings.BuildkitConfig
 	if buildkitConf != "" {
-		if p.Settings.Daemon.BuildkitConfigFile, err = file.WriteTmpFile("buildkit.toml", buildkitConf); err != nil {
+		if p.Settings.Daemon.BuildkitConfigFile, err = plugin_file.WriteTmpFile("buildkit.toml", buildkitConf); err != nil {
 			return fmt.Errorf("error writing buildkit config: %w", err)
 		}
 
