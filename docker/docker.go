@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/thegeeklab/wp-plugin-go/v2/types"
+	"github.com/thegeeklab/wp-plugin-go/v3/types"
 	"github.com/urfave/cli/v2"
 	"golang.org/x/sys/execabs"
 )

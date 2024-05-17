@@ -10,10 +10,10 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	"github.com/thegeeklab/wp-plugin-go/v2/file"
-	"github.com/thegeeklab/wp-plugin-go/v2/tag"
-	"github.com/thegeeklab/wp-plugin-go/v2/types"
-	"github.com/thegeeklab/wp-plugin-go/v2/util"
+	"github.com/thegeeklab/wp-plugin-go/v3/file"
+	"github.com/thegeeklab/wp-plugin-go/v3/tag"
+	"github.com/thegeeklab/wp-plugin-go/v3/types"
+	"github.com/thegeeklab/wp-plugin-go/v3/util"
 	"github.com/urfave/cli/v2"
 )
 

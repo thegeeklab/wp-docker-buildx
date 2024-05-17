@@ -5,10 +5,12 @@ go 1.22
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/rs/zerolog v1.32.0
-	github.com/thegeeklab/wp-plugin-go/v2 v2.3.1
+	github.com/thegeeklab/wp-plugin-go/v3 v3.0.2
 	github.com/urfave/cli/v2 v2.27.2
 	golang.org/x/sys v0.20.0
 )
+
+require github.com/thegeeklab/wp-plugin-go/v2 v2.3.1
 
 require (
 	github.com/Masterminds/goutils v1.1.1 // indirect
