@@ -13,7 +13,7 @@ import (
 	plugin_exec "github.com/thegeeklab/wp-plugin-go/v3/exec"
 	plugin_file "github.com/thegeeklab/wp-plugin-go/v3/file"
 	plugin_tag "github.com/thegeeklab/wp-plugin-go/v3/tag"
-	"github.com/thegeeklab/wp-plugin-go/v3/types"
+	plugin_types "github.com/thegeeklab/wp-plugin-go/v3/types"
 	plugin_util "github.com/thegeeklab/wp-plugin-go/v3/util"
 	"github.com/urfave/cli/v2"
 )
@@ -190,14 +190,14 @@ func (p *Plugin) Execute() error {
 }
 
 func (p *Plugin) FlagsFromContext() error {
-	cacheFrom, ok := p.Context.Generic("cache-from").(*types.StringSliceFlag)
+	cacheFrom, ok := p.Context.Generic("cache-from").(*plugin_types.StringSliceFlag)
 	if !ok {
 		return fmt.Errorf("%w: failed to read cache-from input", ErrTypeAssertionFailed)
 	}
 
 	p.Settings.Build.CacheFrom = cacheFrom.Get()
 
-	secrets, ok := p.Context.Generic("secrets").(*types.StringSliceFlag)
+	secrets, ok := p.Context.Generic("secrets").(*plugin_types.StringSliceFlag)
 	if !ok {
 		return fmt.Errorf("%w: failed to read secrets input", ErrTypeAssertionFailed)
 	}
