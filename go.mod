@@ -6,7 +6,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/rs/zerolog v1.33.0
 	github.com/thegeeklab/wp-plugin-go/v3 v3.0.5
-	github.com/urfave/cli/v2 v2.27.3
+	github.com/urfave/cli/v2 v2.27.4
 )
 
 require (
