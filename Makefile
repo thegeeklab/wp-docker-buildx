@@ -2,6 +2,8 @@
 GOFUMPT_PACKAGE_VERSION := v0.7.0
 # renovate: datasource=github-releases depName=golangci/golangci-lint
 GOLANGCI_LINT_PACKAGE_VERSION := v1.61.0
+# renovate: datasource=docker depName=docker.io/techknowlogick/xgo
+XGO_PACKAGE_VERSION := go-1.22.x
 
 EXECUTABLE := wp-docker-buildx
 
@@ -19,7 +21,6 @@ GOLANGCI_LINT_PACKAGE ?= github.com/golangci/golangci-lint/cmd/golangci-lint@$(G
 XGO_PACKAGE ?= src.techknowlogick.com/xgo@latest
 GOTESTSUM_PACKAGE ?= gotest.tools/gotestsum@latest
 
-XGO_VERSION := go-1.22.x
 XGO_TARGETS ?= linux/amd64,linux/arm64
 
 TARGETOS ?= linux
@@ -81,7 +82,7 @@ $(DIST_DIRS):
 
 .PHONY: xgo
 xgo: | $(DIST_DIRS)
-	$(GO) run $(XGO_PACKAGE) -go $(XGO_VERSION) -v -ldflags '-extldflags "-static" $(LDFLAGS)' -tags '$(TAGS)' -targets '$(XGO_TARGETS)' -out $(EXECUTABLE) --pkg cmd/$(EXECUTABLE) .
+	$(GO) run $(XGO_PACKAGE) -go $(XGO_PACKAGE_VERSION) -v -ldflags '-extldflags "-static" $(LDFLAGS)' -tags '$(TAGS)' -targets '$(XGO_TARGETS)' -out $(EXECUTABLE) --pkg cmd/$(EXECUTABLE) .
 	cp /build/* $(CWD)/$(DIST)
 	ls -l $(CWD)/$(DIST)
 
