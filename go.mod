@@ -5,7 +5,7 @@ go 1.23.2
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/rs/zerolog v1.33.0
-	github.com/thegeeklab/wp-plugin-go/v3 v3.0.7
+	github.com/thegeeklab/wp-plugin-go/v3 v3.0.8
 	github.com/urfave/cli/v2 v2.27.5
 )
 
