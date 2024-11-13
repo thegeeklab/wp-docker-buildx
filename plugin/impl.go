@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
@@ -129,7 +130,12 @@ func (p *Plugin) Execute() error {
 	}
 
 	if p.Settings.Registry.Config != "" {
-		if err := WriteDockerConf(homeDir, p.Settings.Registry.Config); err != nil {
+		path := filepath.Join(homeDir, ".docker", "config.json")
+		if err := os.MkdirAll(filepath.Dir(path), strictFilePerm); err != nil {
+			return err
+		}
+
+		if err := WriteDockerConf(path, p.Settings.Registry.Config); err != nil {
 			return fmt.Errorf("error writing docker config: %w", err)
 		}
 	}

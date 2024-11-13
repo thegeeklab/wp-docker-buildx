@@ -333,11 +333,11 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Category:    category,
 		},
 		&cli.StringFlag{
-			Name:        "docker.config",
-			EnvVars:     []string{"PLUGIN_CONFIG", "DOCKER_PLUGIN_CONFIG"},
-			Usage:       "content of the docker daemon json config",
+			Name:        "registry.config",
+			EnvVars:     []string{"PLUGIN_REGISTRY_CONFIG", "DOCKER_REGISTRY_CONFIG"},
+			Usage:       "content of the registry credentials store file",
 			Destination: &settings.Registry.Config,
-			DefaultText: "$DOCKER_PLUGIN_CONFIG",
+			DefaultText: "$DOCKER_REGISTRY_CONFIG",
 			Category:    category,
 		},
 		&cli.BoolFlag{

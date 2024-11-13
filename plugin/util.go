@@ -1,10 +1,13 @@
 package plugin
 
 import (
+	"encoding/json"
+	"fmt"
 	"net"
 	"os"
-	"path/filepath"
 )
+
+var errInvalidDockerConfig = fmt.Errorf("invalid docker config")
 
 func GetContainerIP() (string, error) {
 	netInterfaceAddrList, err := net.InterfaceAddrs()
@@ -23,13 +26,17 @@ func GetContainerIP() (string, error) {
 }
 
 func WriteDockerConf(path, conf string) error {
-	confPath := filepath.Join(path, ".docker", "config.json")
-
-	if err := os.MkdirAll(confPath, strictFilePerm); err != nil {
-		return err
+	var jsonData interface{}
+	if err := json.Unmarshal([]byte(conf), &jsonData); err != nil {
+		return fmt.Errorf("%w: %w", errInvalidDockerConfig, err)
 	}
 
-	err := os.WriteFile(path, []byte(conf), strictFilePerm)
+	jsonBytes, err := json.Marshal(jsonData)
+	if err != nil {
+		return fmt.Errorf("%w: %w", errInvalidDockerConfig, err)
+	}
+
+	err = os.WriteFile(path, jsonBytes, strictFilePerm)
 	if err != nil {
 		return err
 	}
