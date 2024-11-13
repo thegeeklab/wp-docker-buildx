@@ -94,11 +94,11 @@ properties:
     defaultValue: false
     required: false
 
-  - name: config
+  - name: registry_config
     description: |
-      Content of the docker daemon json config.
+      Content of the registry credentials store file.
     type: string
-    defaultValue: $DOCKER_PLUGIN_CONFIG
+    defaultValue: $DOCKER_REGISTRY_CONFIG
     required: false
 
   - name: containerfile
