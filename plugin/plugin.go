@@ -337,7 +337,7 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_REGISTRY_CONFIG", "DOCKER_REGISTRY_CONFIG"},
 			Usage:       "content of the registry credentials store file",
 			Destination: &settings.Registry.Config,
-			DefaultText: "$DOCKER_PLUGIN_CONFIG",
+			DefaultText: "$DOCKER_REGISTRY_CONFIG",
 			Category:    category,
 		},
 		&cli.BoolFlag{
