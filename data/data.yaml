@@ -34,13 +34,38 @@ properties:
 
   - name: build_args
     description: |
-      Custom build arguments for the build.
-    type: list
+      Custom build arguments for the build. Example:
+
+      ```yaml
+      steps:
+        - name: Build
+          image: quay.io/thegeeklab/wp-docker-buildx
+          settings:
+            repo: example/repo
+            build_args:
+              FOO: bar
+              API_KEY:
+                from_secret: API_KEY
+      ```
+    type: map
     required: false
 
   - name: build_args_from_env
     description: |
-      Forward environment variables as custom arguments to the build.
+      Forward environment variables to the build as build arguments. If the same key
+      already exists in `build_args`, it will not be overwritten. Example:
+
+      ```yaml
+      steps:
+        - name: Build
+          image: quay.io/thegeeklab/wp-docker-buildx
+          environment:
+            CUSTOM_ENVIRONMENT: custom_value
+          settings:
+            repo: example/repo
+            build_args_from_env:
+              - CUSTOM_ENVIRONMENT
+      ```
     type: list
     required: false
 
