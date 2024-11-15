@@ -52,7 +52,19 @@ properties:
 
   - name: build_args_from_env
     description: |
-      Forward environment variables as build arguments to the build.
+      Forward environment variables as build arguments to the build. Example:
+
+      ```yaml
+      steps:
+        - name: Build
+          image: quay.io/thegeeklab/wp-docker-buildx
+          environment:
+            CUSTOM_ENVIRONMENT: custom_value
+          settings:
+            repo: example/repo
+            build_args_from_env:
+              - CUSTOM_ENVIRONMENT
+      ```
     type: list
     required: false
 
