@@ -216,6 +216,9 @@ func (p *Plugin) FlagsFromContext() error {
 	}
 
 	p.Settings.Build.Args = args.Get()
+	if p.Settings.Build.Args == nil {
+		p.Settings.Build.Args = make(map[string]string)
+	}
 
 	return nil
 }
