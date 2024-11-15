@@ -110,6 +110,7 @@ func TestAddArgFromEnv(t *testing.T) {
 		name     string
 		envVars  map[string]string
 		key      string
+		existing map[string]string
 		expected map[string]string
 	}{
 		{
@@ -157,6 +158,19 @@ func TestAddArgFromEnv(t *testing.T) {
 				"SPECIAL_VAR": "!@#$%^&*()",
 			},
 		},
+		{
+			name: "preserve existing args",
+			envVars: map[string]string{
+				"TEST_VAR": "new_value",
+			},
+			key: "TEST_VAR",
+			existing: map[string]string{
+				"TEST_VAR": "old_value",
+			},
+			expected: map[string]string{
+				"TEST_VAR": "old_value",
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -172,6 +186,10 @@ func TestAddArgFromEnv(t *testing.T) {
 			}
 
 			b := &Build{Args: make(map[string]string)}
+			if tt.existing != nil {
+				b.Args = tt.existing
+			}
+
 			b.addArgFromEnv(tt.key)
 			assert.Equal(t, tt.expected, b.Args)
 		})

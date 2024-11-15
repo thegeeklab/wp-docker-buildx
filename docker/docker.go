@@ -213,6 +213,10 @@ func (b *Build) addProxyValue(key string) {
 }
 
 func (b *Build) addArgFromEnv(key string) {
+	if value, ok := b.Args[key]; ok && value != "" {
+		return
+	}
+
 	if value, ok := os.LookupEnv(key); ok && value != "" {
 		b.Args[key] = value
 	}

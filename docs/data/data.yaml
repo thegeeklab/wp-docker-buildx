@@ -52,7 +52,8 @@ properties:
 
   - name: build_args_from_env
     description: |
-      Forward environment variables as build arguments to the build. Example:
+      Forward environment variables to the build as build arguments. If the same key
+      already exists in `build_args`, it will not be overwritten. Example:
 
       ```yaml
       steps:
