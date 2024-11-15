@@ -2,6 +2,7 @@ package docker
 
 import (
 	"fmt"
+	"maps"
 	"os"
 	"strings"
 	"time"
@@ -23,33 +24,33 @@ type Registry struct {
 
 // Build defines Docker build parameters.
 type Build struct {
-	Ref           string          // Git commit ref
-	Branch        string          // Git repository branch
-	Containerfile string          // Docker build Containerfile
-	Context       string          // Docker build context
-	TagsAuto      bool            // Docker build auto tag
-	TagsSuffix    string          // Docker build tags with suffix
-	Tags          cli.StringSlice // Docker build tags
-	ExtraTags     cli.StringSlice // Docker build tags including registry
-	Platforms     cli.StringSlice // Docker build target platforms
-	Args          cli.StringSlice // Docker build args
-	ArgsEnv       cli.StringSlice // Docker build args from env
-	Target        string          // Docker build target
-	Pull          bool            // Docker build pull
-	CacheFrom     []string        // Docker build cache-from
-	CacheTo       string          // Docker build cache-to
-	Compress      bool            // Docker build compress
-	Repo          string          // Docker build repository
-	NoCache       bool            // Docker build no-cache
-	AddHost       cli.StringSlice // Docker build add-host
-	Quiet         bool            // Docker build quiet
-	Output        string          // Docker build output folder
-	NamedContext  cli.StringSlice // Docker build named context
-	Labels        cli.StringSlice // Docker build labels
-	Provenance    string          // Docker build provenance attestation
-	SBOM          string          // Docker build sbom attestation
-	Secrets       []string        // Docker build secrets
-	Dryrun        bool            // Docker build dryrun
+	Ref           string            // Git commit ref
+	Branch        string            // Git repository branch
+	Containerfile string            // Docker build Containerfile
+	Context       string            // Docker build context
+	TagsAuto      bool              // Docker build auto tag
+	TagsSuffix    string            // Docker build tags with suffix
+	Tags          cli.StringSlice   // Docker build tags
+	ExtraTags     cli.StringSlice   // Docker build tags including registry
+	Platforms     cli.StringSlice   // Docker build target platforms
+	Args          map[string]string // Docker build args
+	ArgsEnv       cli.StringSlice   // Docker build args from env
+	Target        string            // Docker build target
+	Pull          bool              // Docker build pull
+	CacheFrom     []string          // Docker build cache-from
+	CacheTo       string            // Docker build cache-to
+	Compress      bool              // Docker build compress
+	Repo          string            // Docker build repository
+	NoCache       bool              // Docker build no-cache
+	AddHost       cli.StringSlice   // Docker build add-host
+	Quiet         bool              // Docker build quiet
+	Output        string            // Docker build output folder
+	NamedContext  cli.StringSlice   // Docker build named context
+	Labels        cli.StringSlice   // Docker build labels
+	Provenance    string            // Docker build provenance attestation
+	SBOM          string            // Docker build sbom attestation
+	Secrets       []string          // Docker build secrets
+	Dryrun        bool              // Docker build dryrun
 }
 
 // helper function to create the docker login command.
@@ -100,9 +101,11 @@ func (b *Build) Run() *plugin_exec.Cmd {
 		"-f", b.Containerfile,
 	}
 
-	defaultBuildArgs := []string{
-		fmt.Sprintf("DOCKER_IMAGE_CREATED=%s", time.Now().Format(time.RFC3339)),
+	defaultBuildArgs := map[string]string{
+		"DOCKER_IMAGE_CREATED": time.Now().Format(time.RFC3339),
 	}
+
+	maps.Copy(b.Args, defaultBuildArgs)
 
 	args = append(args, b.Context)
 	if !b.Dryrun && b.Output == "" && len(b.Tags.Value()) > 0 {
@@ -130,11 +133,11 @@ func (b *Build) Run() *plugin_exec.Cmd {
 	}
 
 	for _, arg := range b.ArgsEnv.Value() {
-		b.addProxyValue(arg)
+		b.addArgFromEnv(arg)
 	}
 
-	for _, arg := range append(defaultBuildArgs, b.Args.Value()...) {
-		args = append(args, "--build-arg", arg)
+	for key, value := range b.Args {
+		args = append(args, "--build-arg", fmt.Sprintf("%s=%s", key, value))
 	}
 
 	for _, host := range b.AddHost.Value() {
@@ -203,9 +206,19 @@ func (b *Build) AddProxyBuildArgs() {
 func (b *Build) addProxyValue(key string) {
 	value := b.getProxyValue(key)
 
-	if len(value) > 0 && !b.hasProxyBuildArg(key) {
-		b.Args = *cli.NewStringSlice(append(b.Args.Value(), fmt.Sprintf("%s=%s", key, value))...)
-		b.Args = *cli.NewStringSlice(append(b.Args.Value(), fmt.Sprintf("%s=%s", strings.ToUpper(key), value))...)
+	if value != "" && !b.hasProxyBuildArg(key) {
+		b.Args[key] = value
+		b.Args[strings.ToUpper(key)] = value
+	}
+}
+
+func (b *Build) addArgFromEnv(key string) {
+	if value, ok := b.Args[key]; ok && value != "" {
+		return
+	}
+
+	if value, ok := os.LookupEnv(key); ok && value != "" {
+		b.Args[key] = value
 	}
 }
 
@@ -215,7 +228,7 @@ func (b *Build) addProxyValue(key string) {
 func (b *Build) getProxyValue(key string) string {
 	value := os.Getenv(key)
 
-	if len(value) > 0 {
+	if value != "" {
 		return value
 	}
 
@@ -224,12 +237,12 @@ func (b *Build) getProxyValue(key string) string {
 
 // helper function that looks to see if a proxy value was set in the build args.
 func (b *Build) hasProxyBuildArg(key string) bool {
-	keyUpper := strings.ToUpper(key)
+	if _, ok := b.Args[key]; ok {
+		return true
+	}
 
-	for _, s := range b.Args.Value() {
-		if strings.HasPrefix(s, key) || strings.HasPrefix(s, keyUpper) {
-			return true
-		}
+	if _, ok := b.Args[strings.ToUpper(key)]; ok {
+		return true
 	}
 
 	return false

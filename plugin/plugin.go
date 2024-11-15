@@ -227,12 +227,12 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Destination: &settings.Build.ExtraTags,
 			Category:    category,
 		},
-		&cli.StringSliceFlag{
-			Name:        "args",
-			EnvVars:     []string{"PLUGIN_BUILD_ARGS"},
-			Usage:       "custom build arguments for the build",
-			Destination: &settings.Build.Args,
-			Category:    category,
+		&cli.GenericFlag{
+			Name:     "args",
+			EnvVars:  []string{"PLUGIN_BUILD_ARGS"},
+			Usage:    "custom build arguments for the build",
+			Value:    &plugin_types.StringMapFlag{},
+			Category: category,
 		},
 		&cli.StringSliceFlag{
 			Name:        "args-from-env",
