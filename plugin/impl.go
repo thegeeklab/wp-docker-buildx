@@ -210,6 +210,13 @@ func (p *Plugin) FlagsFromContext() error {
 
 	p.Settings.Build.Secrets = secrets.Get()
 
+	args, ok := p.Context.Generic("args").(*plugin_types.StringMapFlag)
+	if !ok {
+		return fmt.Errorf("%w: failed to read args input", ErrTypeAssertionFailed)
+	}
+
+	p.Settings.Build.Args = args.Get()
+
 	return nil
 }
 
