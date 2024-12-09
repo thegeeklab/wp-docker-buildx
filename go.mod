@@ -1,6 +1,6 @@
 module github.com/thegeeklab/wp-docker-buildx
 
-go 1.23.3
+go 1.23.4
 
 require (
 	github.com/cenkalti/backoff/v4 v4.3.0
