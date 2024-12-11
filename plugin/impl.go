@@ -11,11 +11,11 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v3/exec"
-	plugin_file "github.com/thegeeklab/wp-plugin-go/v3/file"
-	plugin_tag "github.com/thegeeklab/wp-plugin-go/v3/tag"
-	plugin_types "github.com/thegeeklab/wp-plugin-go/v3/types"
-	plugin_util "github.com/thegeeklab/wp-plugin-go/v3/util"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
+	plugin_file "github.com/thegeeklab/wp-plugin-go/v4/file"
+	plugin_tag "github.com/thegeeklab/wp-plugin-go/v4/tag"
+	plugin_types "github.com/thegeeklab/wp-plugin-go/v4/types"
+	plugin_util "github.com/thegeeklab/wp-plugin-go/v4/util"
 	"github.com/urfave/cli/v2"
 )
 
