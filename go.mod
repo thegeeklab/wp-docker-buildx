@@ -10,8 +10,6 @@ require (
 	github.com/urfave/cli/v2 v2.27.5
 )
 
-require github.com/thegeeklab/wp-plugin-go/v3 v3.0.9
-
 require (
 	dario.cat/mergo v1.0.1 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
