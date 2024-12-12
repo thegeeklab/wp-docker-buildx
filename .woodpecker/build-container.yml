@@ -28,7 +28,6 @@ steps:
       TRIVY_SEVERITY: HIGH,CRITICAL
       TRIVY_TIMEOUT: 1m
       TRIVY_DB_REPOSITORY: docker.io/aquasec/trivy-db:2
-    failure: ignore
 
   - name: publish-dockerhub
     image: quay.io/thegeeklab/wp-docker-buildx:6
@@ -46,6 +45,7 @@ steps:
       username:
         from_secret: docker_username
     when:
+      - status: [success, failure]
       - event: [tag]
       - event: [push, manual]
         branch:
@@ -68,6 +68,7 @@ steps:
       username:
         from_secret: quay_username
     when:
+      - status: [success, failure]
       - event: [tag]
       - event: [push, manual]
         branch:
