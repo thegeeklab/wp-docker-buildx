@@ -45,11 +45,11 @@ steps:
       username:
         from_secret: docker_username
     when:
-      - status: [success, failure]
       - event: [tag]
       - event: [push, manual]
         branch:
           - ${CI_REPO_DEFAULT_BRANCH}
+        status: [success, failure]
 
   - name: publish-quay
     image: quay.io/thegeeklab/wp-docker-buildx:6
@@ -68,11 +68,11 @@ steps:
       username:
         from_secret: quay_username
     when:
-      - status: [success, failure]
       - event: [tag]
       - event: [push, manual]
         branch:
           - ${CI_REPO_DEFAULT_BRANCH}
+        status: [success, failure]
 
 depends_on:
   - test
