@@ -1,6 +1,6 @@
 ---
 when:
-  - event: [pull_request, tag]
+  - event: [tag]
   - event: [push, manual]
     branch:
       - ${CI_REPO_DEFAULT_BRANCH}
@@ -21,11 +21,6 @@ steps:
       repo: ${CI_REPO}
       username:
         from_secret: docker_username
-    when:
-      - event: [tag]
-      - event: [push, manual]
-        branch:
-          - ${CI_REPO_DEFAULT_BRANCH}
 
   - name: publish-quay
     image: quay.io/thegeeklab/wp-docker-buildx:6
@@ -43,11 +38,6 @@ steps:
       repo: quay.io/${CI_REPO}
       username:
         from_secret: quay_username
-    when:
-      - event: [tag]
-      - event: [push, manual]
-        branch:
-          - ${CI_REPO_DEFAULT_BRANCH}
 
 depends_on:
   - test
