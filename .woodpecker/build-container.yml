@@ -1,6 +1,6 @@
 ---
 when:
-  - event: [tag]
+  - event: [pull_request, tag]
   - event: [push, manual]
     branch:
       - ${CI_REPO_DEFAULT_BRANCH}
