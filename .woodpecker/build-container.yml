@@ -28,6 +28,7 @@ steps:
       TRIVY_SEVERITY: HIGH,CRITICAL
       TRIVY_TIMEOUT: 1m
       TRIVY_DB_REPOSITORY: docker.io/aquasec/trivy-db:2
+      TRIVY_IGNOREFILE: .trivyignore.yaml
 
   - name: publish-dockerhub
     image: quay.io/thegeeklab/wp-docker-buildx:6
