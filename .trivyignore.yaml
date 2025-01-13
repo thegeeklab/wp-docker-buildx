@@ -7,7 +7,7 @@ vulnerabilities:
       - "usr/local/libexec/docker/cli-plugins/docker-buildx"
       - "usr/local/libexec/docker/cli-plugins/docker-compose"
     statement: https://github.com/thegeeklab/wp-docker-buildx/issues/293
-    expired_at: 2025-01-13
+    expired_at: 2025-02-13
   - id: CVE-2024-45338
     paths:
       - "usr/lib/docker/cli-plugins/docker-buildx"
@@ -15,4 +15,4 @@ vulnerabilities:
       - "usr/local/libexec/docker/cli-plugins/docker-buildx"
       - "usr/local/libexec/docker/cli-plugins/docker-compose"
     statement: https://github.com/thegeeklab/wp-docker-buildx/issues/293
-    expired_at: 2025-01-13
+    expired_at: 2025-02-13
