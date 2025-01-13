@@ -28,7 +28,6 @@ const (
 	daemonBackoffMultiplier      = 3.5
 )
 
-//nolint:revive
 func (p *Plugin) run(ctx context.Context) error {
 	if err := p.FlagsFromContext(); err != nil {
 		return fmt.Errorf("validation failed: %w", err)
@@ -38,7 +37,7 @@ func (p *Plugin) run(ctx context.Context) error {
 		return fmt.Errorf("validation failed: %w", err)
 	}
 
-	if err := p.Execute(); err != nil {
+	if err := p.Execute(ctx); err != nil {
 		return fmt.Errorf("execution failed: %w", err)
 	}
 
@@ -80,7 +79,7 @@ func (p *Plugin) Validate() error {
 // Execute provides the implementation of the plugin.
 //
 //nolint:gocognit
-func (p *Plugin) Execute() error {
+func (p *Plugin) Execute(ctx context.Context) error {
 	var err error
 
 	homeDir := plugin_util.GetUserHomeDir()
@@ -166,14 +165,23 @@ func (p *Plugin) Execute() error {
 
 	p.Settings.Build.AddProxyBuildArgs()
 
-	backoffOps := func() error {
-		return docker.Version().Run()
+	bf := backoff.NewExponentialBackOff()
+	bf.InitialInterval = daemonBackoffInitialInterval
+	bf.Multiplier = daemonBackoffMultiplier
+
+	bfo := func() (any, error) {
+		return nil, docker.Version().Run()
 	}
-	backoffLog := func(err error, delay time.Duration) {
+
+	bfn := func(err error, delay time.Duration) {
 		log.Error().Msgf("failed to run docker version command: %v: retry in %s", err, delay.Truncate(time.Second))
 	}
 
-	if err := backoff.RetryNotify(backoffOps, newBackoff(daemonBackoffMaxRetries), backoffLog); err != nil {
+	_, err = backoff.Retry(ctx, bfo,
+		backoff.WithBackOff(bf),
+		backoff.WithMaxTries(daemonBackoffMaxRetries),
+		backoff.WithNotify(bfn))
+	if err != nil {
 		return err
 	}
 
@@ -221,12 +229,4 @@ func (p *Plugin) FlagsFromContext() error {
 	}
 
 	return nil
-}
-
-func newBackoff(maxRetries uint64) backoff.BackOff {
-	b := backoff.NewExponentialBackOff()
-	b.InitialInterval = daemonBackoffInitialInterval
-	b.Multiplier = daemonBackoffMultiplier
-
-	return backoff.WithMaxRetries(b, maxRetries)
 }
