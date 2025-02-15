@@ -5,7 +5,6 @@ import (
 	"maps"
 	"os"
 	"strings"
-	"time"
 
 	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
 	"github.com/urfave/cli/v2"
@@ -47,10 +46,12 @@ type Build struct {
 	Output        string            // Docker build output folder
 	NamedContext  cli.StringSlice   // Docker build named context
 	Labels        cli.StringSlice   // Docker build labels
+	LabelsAuto    bool              // Docker build labels auto
 	Provenance    string            // Docker build provenance attestation
 	SBOM          string            // Docker build sbom attestation
 	Secrets       []string          // Docker build secrets
 	Dryrun        bool              // Docker build dryrun
+	Time          string            // Docker build time
 }
 
 // helper function to create the docker login command.
@@ -102,7 +103,7 @@ func (b *Build) Run() *plugin_exec.Cmd {
 	}
 
 	defaultBuildArgs := map[string]string{
-		"DOCKER_IMAGE_CREATED": time.Now().Format(time.RFC3339),
+		"DOCKER_IMAGE_CREATED": b.Time,
 	}
 
 	maps.Copy(b.Args, defaultBuildArgs)

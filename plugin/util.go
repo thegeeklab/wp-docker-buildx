@@ -43,3 +43,27 @@ func WriteDockerConf(path, conf string) error {
 
 	return nil
 }
+
+func (p *Plugin) GenerateLabels() []string {
+	l := make([]string, 0)
+
+	// As described in https://github.com/opencontainers/image-spec/blob/main/annotations.md
+	l = append(l, fmt.Sprintf("org.opencontainers.image.created=%s", p.Settings.Build.Time))
+
+	if p.Settings != nil {
+		if tags := p.Settings.Build.Tags.Value(); len(tags) > 0 {
+			l = append(l, fmt.Sprintf("org.opencontainers.image.version=%s", tags[len(tags)-1]))
+		}
+	}
+
+	if p.Repository != nil && p.Repository.URL != "" {
+		l = append(l, fmt.Sprintf("org.opencontainers.image.source=%s", p.Repository.URL))
+		l = append(l, fmt.Sprintf("org.opencontainers.image.url=%s", p.Repository.URL))
+	}
+
+	if p.Commit != nil && p.Commit.SHA != "" {
+		l = append(l, fmt.Sprintf("org.opencontainers.image.revision=%s", p.Commit.SHA))
+	}
+
+	return l
+}
