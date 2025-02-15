@@ -373,8 +373,8 @@ func Flags(settings *Settings, category string) []cli.Flag {
 		},
 		&cli.BoolFlag{
 			Name:        "labels.auto",
-			EnvVars:     []string{"PLUGIN_DEFAULT_LABELS", "PLUGIN_LABELS_AUTO"},
-			Usage:       "generates labels automatically based on git repository info",
+			EnvVars:     []string{"PLUGIN_AUTO_LABEL", "PLUGIN_DEFAULT_LABELS"},
+			Usage:       "generates labels automatically based on git repository information",
 			Value:       false,
 			Destination: &settings.Build.LabelsAuto,
 			Category:    category,
