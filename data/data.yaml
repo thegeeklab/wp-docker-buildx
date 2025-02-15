@@ -69,7 +69,8 @@ properties:
 
   - name: buildkit_config
     description: |
-      Content of the docker buildkit toml [config](https://github.com/moby/buildkit/blob/master/docs/buildkitd.toml.md). Example:
+      Content of the docker buildkit toml [config](https://github.com/moby/buildkit/blob/master/docs/buildkitd.toml.md).
+      Example:
 
       ```yaml
       steps:
@@ -87,8 +88,8 @@ properties:
 
   - name: cache_from
     description: |
-      Images to consider as [cache sources](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from). To properly work,
-      commas used in the cache source entries need to be escaped:
+      Images to consider as [cache sources](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from).
+      To properly work, commas used in the cache source entries need to be escaped:
 
       ```yaml
       steps:
@@ -106,7 +107,8 @@ properties:
 
   - name: cache_to
     description: |
-      [Cache destination](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to) for the build cache.
+      [Cache destination](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-to)
+      for the build cache.
     type: string
     required: false
 
@@ -222,6 +224,25 @@ properties:
     type: list
     required: false
 
+  - name: auto_label
+    description: |
+      Generates [opencontainers labels](https://github.com/opencontainers/image-spec/blob/main/annotations.md)
+      automatically based on Git repository information. If set, manual labels defined by the `labels` option
+      will be overwritten.
+
+      Generated labels:
+
+        - `org.opencontainers.image.created`
+        - `org.opencontainers.image.version`
+        - `org.opencontainers.image.source`
+        - `org.opencontainers.image.url`
+        - `org.opencontainers.image.revision`
+
+      The version label uses the last item from the `tags` option.
+    type: bool
+    defaultValue: false
+    required: false
+
   - name: log_level
     description: |
       Plugin log level.
@@ -233,8 +254,8 @@ properties:
     description: |
       Max concurrent uploads for each push.
 
-      By default the Docker daemon will push five layers of an image at a time. If you are on a low bandwidth connection this may cause
-      timeout issues and you may want to lower with this option.
+      By default the Docker daemon will push five layers of an image at a time. If you are on a low
+      bandwidth connection this may cause timeout issues and you may want to lower with this option.
     type: string
     required: false
 
@@ -253,7 +274,8 @@ properties:
 
   - name: named_context
     description: |
-      Additional named [build contexts](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context) (format: `name=path`).
+      Additional named [build contexts](https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context)
+      (format: `name=path`).
     type: list
     required: false
 
@@ -266,8 +288,8 @@ properties:
 
   - name: output
     description: |
-      [Export action](https://docs.docker.com/engine/reference/commandline/buildx_build/#output) for the build result
-      (format: `path` or `type=TYPE[,KEY=VALUE]`).
+      [Export action](https://docs.docker.com/engine/reference/commandline/buildx_build/#output) for
+      the build result (format: `path` or `type=TYPE[,KEY=VALUE]`).
     type: string
     required: false
 
@@ -286,7 +308,8 @@ properties:
 
   - name: provenance
     description: |
-      Generate [provenance](https://docs.docker.com/build/attestations/slsa-provenance/) attestation for the build (shorthand for `--attest=type=provenance`).
+      Generate [provenance](https://docs.docker.com/build/attestations/slsa-provenance/) attestation
+      for the build (shorthand for `--attest=type=provenance`).
     type: string
     required: false
 
@@ -322,14 +345,15 @@ properties:
 
   - name: sbom
     description: |
-      Generate [SBOM](https://docs.docker.com/build/attestations/sbom/) attestation for the build (shorthand for `--attest type=sbom`).
+      Generate [SBOM](https://docs.docker.com/build/attestations/sbom/) attestation for the
+      build (shorthand for `--attest type=sbom`).
     type: string
     required: false
 
   - name: secrets
     description: |
-      Exposes [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret) to the build.
-      The secrets can be used by the build using `RUN --mount=type=secret` mount.
+      Exposes [secrets](https://docs.docker.com/engine/reference/commandline/buildx_build/#secret)
+      to the build. The secrets can be used by the build using `RUN --mount=type=secret` mount.
 
       ```yaml
       steps:
