@@ -46,6 +46,7 @@ func (p *Plugin) run(ctx context.Context) error {
 
 // Validate handles the settings validation of the plugin.
 func (p *Plugin) Validate() error {
+	p.Settings.Build.Time = time.Now().Format(time.RFC3339)
 	p.Settings.Build.Branch = p.Metadata.Repository.Branch
 	p.Settings.Build.Ref = p.Metadata.Curr.Ref
 	p.Settings.Daemon.Registry = p.Settings.Registry.Address
@@ -71,6 +72,10 @@ func (p *Plugin) Validate() error {
 
 			return nil
 		}
+	}
+
+	if p.Settings.Build.LabelsAuto {
+		p.Settings.Build.Labels = *cli.NewStringSlice(p.GenerateLabels()...)
 	}
 
 	return nil

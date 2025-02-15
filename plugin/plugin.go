@@ -14,7 +14,9 @@ import (
 // Plugin implements provide the plugin.
 type Plugin struct {
 	*plugin_base.Plugin
-	Settings *Settings
+	Repository *plugin_base.Repository
+	Commit     *plugin_base.Commit
+	Settings   *Settings
 }
 
 // Settings for the Plugin.
@@ -369,6 +371,15 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Destination: &settings.Build.Labels,
 			Category:    category,
 		},
+		&cli.BoolFlag{
+			Name:        "labels.auto",
+			EnvVars:     []string{"PLUGIN_AUTO_LABEL", "PLUGIN_DEFAULT_LABELS"},
+			Usage:       "generates labels automatically based on git repository information",
+			Value:       false,
+			Destination: &settings.Build.LabelsAuto,
+			Category:    category,
+		},
+
 		&cli.StringFlag{
 			Name:        "provenance",
 			EnvVars:     []string{"PLUGIN_PROVENANCE"},
