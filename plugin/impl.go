@@ -193,7 +193,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 	batchCmd = append(batchCmd, docker.Info())
 	batchCmd = append(batchCmd, p.Settings.Daemon.CreateBuilder())
 	batchCmd = append(batchCmd, p.Settings.Daemon.ListBuilder())
-	batchCmd = append(batchCmd, p.Settings.Build.Run())
+	batchCmd = append(batchCmd, p.Settings.Build.Run(p.Environment.Value()))
 
 	for _, cmd := range batchCmd {
 		if cmd == nil {

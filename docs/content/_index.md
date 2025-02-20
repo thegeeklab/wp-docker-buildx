@@ -72,12 +72,12 @@ steps:
   - name: docker
     image: quay.io/thegeeklab/wp-docker-buildx
     privileged: true
-    environment:
-      AWS_ACCESS_KEY_ID:
-        from_secret: aws_access_key_id
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: aws_secret_access_key
     settings:
+      environment:
+        AWS_ACCESS_KEY_ID:
+          from_secret: aws_access_key_id
+        AWS_SECRET_ACCESS_KEY:
+          from_secret: aws_secret_access_key
       registry: <account_id>.dkr.ecr.<region>.amazonaws.com
       repo: <account_id>.dkr.ecr.<region>.amazonaws.com/octocat/example
       tags: latest

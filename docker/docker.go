@@ -94,7 +94,7 @@ func Info() *plugin_exec.Cmd {
 }
 
 // helper function to create the docker build command.
-func (b *Build) Run() *plugin_exec.Cmd {
+func (b *Build) Run(env []string) *plugin_exec.Cmd {
 	args := []string{
 		"buildx",
 		"build",
@@ -190,6 +190,8 @@ func (b *Build) Run() *plugin_exec.Cmd {
 	}
 
 	cmd := plugin_exec.Command(dockerBin, args...)
+
+	cmd.Env = append(os.Environ(), env...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
