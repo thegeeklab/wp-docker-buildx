@@ -250,6 +250,25 @@ properties:
     defaultValue: "info"
     required: false
 
+  - name: environment
+    description: |
+      Plugin environment variables exposed to the docker build command. In contrast to the step environment,
+      this option can be used if environment variables are to be used in conjunction with `from_secret`.
+      Example:
+
+      ```yaml
+      steps:
+        - name: Build
+          image: quay.io/thegeeklab/wp-docker-buildx
+          privileged: true
+          settings:
+            environment:
+              SECURE_TOKEN:
+                from_secret: secure_token
+      ```
+    type: map
+    required: false
+
   - name: max_concurrent_uploads
     description: |
       Max concurrent uploads for each push.
@@ -360,10 +379,10 @@ properties:
         - name: Build
           image: quay.io/thegeeklab/wp-docker-buildx
           privileged: true
-          environment:
-            SECURE_TOKEN:
-              from_secret: secure_token
           settings:
+            environment:
+              SECURE_TOKEN:
+                from_secret: secure_token
             secrets:
               # while using quotes, double-escaping is required
               - "id=raw_file_secret\\\\,src=file.txt"
