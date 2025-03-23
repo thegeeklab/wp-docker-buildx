@@ -2,8 +2,9 @@ package plugin
 
 import (
 	"context"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSecretsFlag(t *testing.T) {
@@ -25,18 +26,18 @@ func TestSecretsFlag(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		for key, value := range tt.envs {
-			t.Setenv(key, value)
-		}
+		t.Run(tt.name, func(t *testing.T) {
+			for key, value := range tt.envs {
+				t.Setenv(key, value)
+			}
 
-		got := New(func(_ context.Context) error { return nil })
+			got := New(func(_ context.Context) error { return nil })
 
-		_ = got.App.Run([]string{"wp-docker-buildx"})
-		_ = got.FlagsFromContext()
+			_ = got.App.Run([]string{"wp-docker-buildx"})
+			_ = got.FlagsFromContext()
 
-		if !reflect.DeepEqual(got.Settings.Build.Secrets, tt.want) {
-			t.Errorf("%q. Build.Secrets = %v, want %v", tt.name, got.Settings.Build.Secrets, tt.want)
-		}
+			assert.EqualValues(t, tt.want, got.Settings.Build.Secrets)
+		})
 	}
 }
 
@@ -47,7 +48,7 @@ func TestEnvironmentFlag(t *testing.T) {
 		want []string
 	}{
 		{
-			name: "parse secrets list with escape",
+			name: "simple environment",
 			envs: map[string]string{
 				"PLUGIN_ENVIRONMENT": `{"env1": "value1", "env2": "value2"}`,
 			},
@@ -59,17 +60,17 @@ func TestEnvironmentFlag(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		for key, value := range tt.envs {
-			t.Setenv(key, value)
-		}
+		t.Run(tt.name, func(t *testing.T) {
+			for key, value := range tt.envs {
+				t.Setenv(key, value)
+			}
 
-		got := New(func(_ context.Context) error { return nil })
+			got := New(func(_ context.Context) error { return nil })
 
-		_ = got.App.Run([]string{"wp-docker-buildx"})
-		_ = got.FlagsFromContext()
+			_ = got.App.Run([]string{"wp-docker-buildx"})
+			_ = got.FlagsFromContext()
 
-		if !reflect.DeepEqual(got.Plugin.Environment.Value(), tt.want) {
-			t.Errorf("%q. Plugin.Environment = %v, want %v", tt.name, got.Plugin.Environment.Value(), tt.want)
-		}
+			assert.EqualValues(t, tt.want, got.Plugin.Environment.Value())
+		})
 	}
 }
