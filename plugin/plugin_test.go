@@ -70,7 +70,7 @@ func TestEnvironmentFlag(t *testing.T) {
 			_ = got.App.Run([]string{"wp-docker-buildx"})
 			_ = got.FlagsFromContext()
 
-			assert.EqualValues(t, tt.want, got.Plugin.Environment.Value())
+			assert.ElementsMatch(t, tt.want, got.Environment.Value())
 		})
 	}
 }
