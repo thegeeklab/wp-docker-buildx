@@ -16,7 +16,7 @@ import (
 	plugin_tag "github.com/thegeeklab/wp-plugin-go/v4/tag"
 	plugin_types "github.com/thegeeklab/wp-plugin-go/v4/types"
 	plugin_util "github.com/thegeeklab/wp-plugin-go/v4/util"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 var ErrTypeAssertionFailed = errors.New("type assertion failed")
