@@ -51,7 +51,7 @@ func (p *Plugin) GenerateLabels() []string {
 	l = append(l, fmt.Sprintf("org.opencontainers.image.created=%s", p.Settings.Build.Time))
 
 	if p.Settings != nil {
-		if tags := p.Settings.Build.Tags.Value(); len(tags) > 0 {
+		if tags := p.Settings.Build.Tags; len(tags) > 0 {
 			l = append(l, fmt.Sprintf("org.opencontainers.image.version=%s", tags[len(tags)-1]))
 		}
 	}

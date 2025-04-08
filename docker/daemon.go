@@ -4,28 +4,27 @@ import (
 	"os"
 
 	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
-	"github.com/urfave/cli/v3"
 )
 
 const dockerdBin = "/usr/local/bin/dockerd"
 
 // Daemon defines Docker daemon parameters.
 type Daemon struct {
-	Registry             string          // Docker registry
-	Mirror               string          // Docker registry mirror
-	Insecure             bool            // Docker daemon enable insecure registries
-	StorageDriver        string          // Docker daemon storage driver
-	StoragePath          string          // Docker daemon storage path
-	Disabled             bool            // DOcker daemon is disabled (already running)
-	Debug                bool            // Docker daemon started in debug mode
-	Bip                  string          // Docker daemon network bridge IP address
-	DNS                  cli.StringSlice // Docker daemon dns server
-	DNSSearch            cli.StringSlice // Docker daemon dns search domain
-	MTU                  string          // Docker daemon mtu setting
-	IPv6                 bool            // Docker daemon IPv6 networking
-	Experimental         bool            // Docker daemon enable experimental mode
-	BuildkitConfigFile   string          // Docker buildkit config file
-	MaxConcurrentUploads string          // Docker daemon max concurrent uploads
+	Registry             string   // Docker registry
+	Mirror               string   // Docker registry mirror
+	Insecure             bool     // Docker daemon enable insecure registries
+	StorageDriver        string   // Docker daemon storage driver
+	StoragePath          string   // Docker daemon storage path
+	Disabled             bool     // DOcker daemon is disabled (already running)
+	Debug                bool     // Docker daemon started in debug mode
+	Bip                  string   // Docker daemon network bridge IP address
+	DNS                  []string // Docker daemon dns server
+	DNSSearch            []string // Docker daemon dns search domain
+	MTU                  string   // Docker daemon mtu setting
+	IPv6                 bool     // Docker daemon IPv6 networking
+	Experimental         bool     // Docker daemon enable experimental mode
+	BuildkitConfigFile   string   // Docker buildkit config file
+	MaxConcurrentUploads string   // Docker daemon max concurrent uploads
 }
 
 // helper function to create the docker daemon command.
@@ -55,11 +54,11 @@ func (d *Daemon) Start() *plugin_exec.Cmd {
 		args = append(args, "--bip", d.Bip)
 	}
 
-	for _, dns := range d.DNS.Value() {
+	for _, dns := range d.DNS {
 		args = append(args, "--dns", dns)
 	}
 
-	for _, dnsSearch := range d.DNSSearch.Value() {
+	for _, dnsSearch := range d.DNSSearch {
 		args = append(args, "--dns-search", dnsSearch)
 	}
 

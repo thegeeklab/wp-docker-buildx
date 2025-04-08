@@ -33,7 +33,7 @@ func TestSecretsFlag(t *testing.T) {
 
 			got := New(func(_ context.Context) error { return nil })
 
-			_ = got.App.Run([]string{"wp-docker-buildx"})
+			_ = got.App.Run(t.Context(), []string{"wp-docker-buildx"})
 			_ = got.FlagsFromContext()
 
 			assert.EqualValues(t, tt.want, got.Settings.Build.Secrets)
@@ -67,7 +67,7 @@ func TestEnvironmentFlag(t *testing.T) {
 
 			got := New(func(_ context.Context) error { return nil })
 
-			_ = got.App.Run([]string{"wp-docker-buildx"})
+			_ = got.App.Run(t.Context(), []string{"wp-docker-buildx"})
 			_ = got.FlagsFromContext()
 
 			assert.ElementsMatch(t, tt.want, got.Environment.Value())
@@ -111,7 +111,7 @@ func TestCacheFromFlag(t *testing.T) {
 
 			got := New(func(_ context.Context) error { return nil })
 
-			_ = got.App.Run([]string{"wp-docker-buildx"})
+			_ = got.App.Run(t.Context(), []string{"wp-docker-buildx"})
 			_ = got.FlagsFromContext()
 
 			assert.ElementsMatch(t, tt.want, got.Settings.Build.CacheFrom)
@@ -150,7 +150,7 @@ func TestBuildArgsFlag(t *testing.T) {
 
 			got := New(func(_ context.Context) error { return nil })
 
-			_ = got.App.Run([]string{"wp-docker-buildx"})
+			_ = got.App.Run(t.Context(), []string{"wp-docker-buildx"})
 			_ = got.FlagsFromContext()
 
 			assert.Equal(t, tt.want, got.Settings.Build.Args)
