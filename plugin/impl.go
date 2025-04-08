@@ -80,8 +80,6 @@ func (p *Plugin) Validate() error {
 }
 
 // Execute provides the implementation of the plugin.
-//
-//nolint:gocognit
 func (p *Plugin) Execute(ctx context.Context) error {
 	var err error
 
