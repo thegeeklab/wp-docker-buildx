@@ -6,7 +6,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.2
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.10.0
-	github.com/thegeeklab/wp-plugin-go/v4 v4.1.3-0.20250408075345-b2a80ef2a658
+	github.com/thegeeklab/wp-plugin-go/v4 v4.1.3-0.20250408095358-380050e99b9a
 	github.com/urfave/cli/v3 v3.1.1
 )
 
