@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.24.2@sha256:18a1f2d1e1d3c49f27c904e9182375169615c65852ace724987929b910195b2c AS build
+FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.24.2@sha256:1ecc479bc712a6bdb56df3e346e33edcc141f469f82840bab9f4bc2bc41bf91d AS build
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -8,7 +8,7 @@ WORKDIR /src
 
 RUN make build
 
-FROM docker:28.0-dind@sha256:4924fece44d61eeec47f619a4c35cd70fa2a31cd36b6283943a122369549fb82
+FROM docker:28.0-dind@sha256:ddb0033088b4fab74881ade341a582e3c6c8021b82377703ba1a6106bd3ded44
 
 LABEL maintainer="Robert Kaussow <mail@thegeeklab.de>"
 LABEL org.opencontainers.image.authors="Robert Kaussow <mail@thegeeklab.de>"
