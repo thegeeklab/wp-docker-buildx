@@ -1,6 +1,7 @@
 ---
 vulnerabilities:
-  - id: CVE-2025-30204
+  - id: CVE-2025-22869
     paths:
-      - "usr/local/bin/dockerd"
-    expired_at: 2025-06-22
+      - "usr/local/libexec/docker/cli-plugins/docker-buildx"
+      - "usr/local/libexec/docker/cli-plugins/docker-compose"
+    expired_at: 2025-05-16
