@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_base "github.com/thegeeklab/wp-plugin-go/v4/plugin"
+	plugin_base "github.com/thegeeklab/wp-plugin-go/v6/plugin"
 )
 
 func TestWriteDockerConf(t *testing.T) {

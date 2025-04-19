@@ -3,7 +3,7 @@ package docker
 import (
 	"os"
 
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
 )
 
 const dockerdBin = "/usr/local/bin/dockerd"

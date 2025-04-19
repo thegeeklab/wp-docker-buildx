@@ -2,15 +2,19 @@ package plugin
 
 import (
 	"context"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/urfave/cli/v3"
 )
 
 func setupPluginTest(t *testing.T) *Plugin {
+	t.Helper()
+
+	cli.HelpPrinter = func(_ io.Writer, _ string, _ interface{}) {}
 	got := New(func(_ context.Context) error { return nil })
 	_ = got.App.Run(t.Context(), []string{"wp-docker-buildx"})
-	_ = got.FlagsFromContext()
 
 	return got
 }

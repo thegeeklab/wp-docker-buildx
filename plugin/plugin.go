@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_base "github.com/thegeeklab/wp-plugin-go/v4/plugin"
-	plugin_types "github.com/thegeeklab/wp-plugin-go/v4/types"
+	plugin_cli "github.com/thegeeklab/wp-plugin-go/v6/cli"
+	plugin_base "github.com/thegeeklab/wp-plugin-go/v6/plugin"
 	"github.com/urfave/cli/v3"
 )
 
@@ -238,12 +238,12 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Destination: &settings.Build.ExtraTags,
 			Category:    category,
 		},
-		&cli.GenericFlag{
-			Name:     "args",
-			Sources:  cli.EnvVars("PLUGIN_BUILD_ARGS"),
-			Usage:    "custom build arguments for the build",
-			Value:    &plugin_types.StringMapFlag{},
-			Category: category,
+		&plugin_cli.StringMapFlag{
+			Name:        "args",
+			Sources:     cli.EnvVars("PLUGIN_BUILD_ARGS"),
+			Usage:       "custom build arguments for the build",
+			Destination: &settings.Build.Args,
+			Category:    category,
 		},
 		&cli.StringSliceFlag{
 			Name:        "args-from-env",
@@ -274,11 +274,15 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Destination: &settings.Build.Target,
 			Category:    category,
 		},
-		&cli.GenericFlag{
-			Name:     "cache-from",
-			Sources:  cli.EnvVars("PLUGIN_CACHE_FROM"),
-			Usage:    "images to consider as cache sources",
-			Value:    &plugin_types.StringSliceFlag{},
+		&plugin_cli.StringSliceFlag{
+			Name:        "cache-from",
+			Sources:     cli.EnvVars("PLUGIN_CACHE_FROM"),
+			Usage:       "images to consider as cache sources",
+			Destination: &settings.Build.CacheFrom,
+			Config: plugin_cli.StringSliceConfig{
+				Delimiter:    ",",
+				EscapeString: "\\",
+			},
 			Category: category,
 		},
 		&cli.StringFlag{
@@ -403,11 +407,15 @@ func Flags(settings *Settings, category string) []cli.Flag {
 			Destination: &settings.Build.SBOM,
 			Category:    category,
 		},
-		&cli.GenericFlag{
-			Name:     "secrets",
-			Sources:  cli.EnvVars("PLUGIN_SECRETS"),
-			Usage:    "exposes secrets to the build",
-			Value:    &plugin_types.StringSliceFlag{},
+		&plugin_cli.StringSliceFlag{
+			Name:        "secrets",
+			Sources:     cli.EnvVars("PLUGIN_SECRETS"),
+			Usage:       "exposes secrets to the build",
+			Destination: &settings.Build.Secrets,
+			Config: plugin_cli.StringSliceConfig{
+				Delimiter:    ",",
+				EscapeString: "\\",
+			},
 			Category: category,
 		},
 	}

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
 )
 
 const dockerBin = "/usr/local/bin/docker"

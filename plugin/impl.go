@@ -11,10 +11,10 @@ import (
 	"github.com/cenkalti/backoff/v5"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
-	plugin_file "github.com/thegeeklab/wp-plugin-go/v4/file"
-	plugin_tag "github.com/thegeeklab/wp-plugin-go/v4/tag"
-	plugin_util "github.com/thegeeklab/wp-plugin-go/v4/util"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
+	plugin_file "github.com/thegeeklab/wp-plugin-go/v6/file"
+	plugin_tag "github.com/thegeeklab/wp-plugin-go/v6/tag"
+	plugin_util "github.com/thegeeklab/wp-plugin-go/v6/util"
 )
 
 var ErrTypeAssertionFailed = errors.New("type assertion failed")
@@ -27,10 +27,6 @@ const (
 )
 
 func (p *Plugin) run(ctx context.Context) error {
-	if err := p.FlagsFromContext(); err != nil {
-		return fmt.Errorf("validation failed: %w", err)
-	}
-
 	if err := p.Validate(); err != nil {
 		return fmt.Errorf("validation failed: %w", err)
 	}
@@ -197,31 +193,6 @@ func (p *Plugin) Execute(ctx context.Context) error {
 		if err := cmd.Run(); err != nil {
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (p *Plugin) FlagsFromContext() error {
-	var ok bool
-
-	p.Settings.Build.CacheFrom, ok = p.App.Value("cache-from").([]string)
-	if !ok {
-		return fmt.Errorf("%w: failed to read cache-from input", ErrTypeAssertionFailed)
-	}
-
-	p.Settings.Build.Secrets, ok = p.App.Value("secrets").([]string)
-	if !ok {
-		return fmt.Errorf("%w: failed to read secrets input", ErrTypeAssertionFailed)
-	}
-
-	p.Settings.Build.Args, ok = p.App.Value("args").(map[string]string)
-	if !ok {
-		return fmt.Errorf("%w: failed to read args input", ErrTypeAssertionFailed)
-	}
-
-	if p.Settings.Build.Args == nil {
-		p.Settings.Build.Args = make(map[string]string)
 	}
 
 	return nil
