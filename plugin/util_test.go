@@ -8,8 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_base "github.com/thegeeklab/wp-plugin-go/v4/plugin"
-	"github.com/urfave/cli/v2"
+	plugin_base "github.com/thegeeklab/wp-plugin-go/v6/plugin"
 )
 
 func TestWriteDockerConf(t *testing.T) {
@@ -70,10 +69,10 @@ func TestGenerateLabels(t *testing.T) {
 				Settings: &Settings{
 					Build: docker.Build{
 						Time: "2023-01-01T00:00:00Z",
-						Tags: *cli.NewStringSlice(
+						Tags: []string{
 							"v1.0.0",
 							"latest",
-						),
+						},
 					},
 				},
 				Repository: &plugin_base.Repository{
@@ -97,9 +96,9 @@ func TestGenerateLabels(t *testing.T) {
 				Settings: &Settings{
 					Build: docker.Build{
 						Time: "2023-01-01T00:00:00Z",
-						Tags: *cli.NewStringSlice(
+						Tags: []string{
 							"v1.0.0",
-						),
+						},
 					},
 				},
 			},

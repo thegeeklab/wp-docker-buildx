@@ -2,10 +2,22 @@ package plugin
 
 import (
 	"context"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/urfave/cli/v3"
 )
+
+func setupPluginTest(t *testing.T) *Plugin {
+	t.Helper()
+
+	cli.HelpPrinter = func(_ io.Writer, _ string, _ interface{}) {}
+	got := New(func(_ context.Context) error { return nil })
+	_ = got.App.Run(t.Context(), []string{"wp-docker-buildx"})
+
+	return got
+}
 
 func TestSecretsFlag(t *testing.T) {
 	tests := []struct {
@@ -31,10 +43,7 @@ func TestSecretsFlag(t *testing.T) {
 				t.Setenv(key, value)
 			}
 
-			got := New(func(_ context.Context) error { return nil })
-
-			_ = got.App.Run([]string{"wp-docker-buildx"})
-			_ = got.FlagsFromContext()
+			got := setupPluginTest(t)
 
 			assert.EqualValues(t, tt.want, got.Settings.Build.Secrets)
 		})
@@ -65,10 +74,7 @@ func TestEnvironmentFlag(t *testing.T) {
 				t.Setenv(key, value)
 			}
 
-			got := New(func(_ context.Context) error { return nil })
-
-			_ = got.App.Run([]string{"wp-docker-buildx"})
-			_ = got.FlagsFromContext()
+			got := setupPluginTest(t)
 
 			assert.ElementsMatch(t, tt.want, got.Environment.Value())
 		})
@@ -109,10 +115,7 @@ func TestCacheFromFlag(t *testing.T) {
 				t.Setenv(key, value)
 			}
 
-			got := New(func(_ context.Context) error { return nil })
-
-			_ = got.App.Run([]string{"wp-docker-buildx"})
-			_ = got.FlagsFromContext()
+			got := setupPluginTest(t)
 
 			assert.ElementsMatch(t, tt.want, got.Settings.Build.CacheFrom)
 		})
@@ -148,10 +151,7 @@ func TestBuildArgsFlag(t *testing.T) {
 				t.Setenv(key, value)
 			}
 
-			got := New(func(_ context.Context) error { return nil })
-
-			_ = got.App.Run([]string{"wp-docker-buildx"})
-			_ = got.FlagsFromContext()
+			got := setupPluginTest(t)
 
 			assert.Equal(t, tt.want, got.Settings.Build.Args)
 		})

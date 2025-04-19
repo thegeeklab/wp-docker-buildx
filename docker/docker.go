@@ -6,8 +6,7 @@ import (
 	"os"
 	"strings"
 
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
-	"github.com/urfave/cli/v2"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
 )
 
 const dockerBin = "/usr/local/bin/docker"
@@ -29,11 +28,11 @@ type Build struct {
 	Context       string            // Docker build context
 	TagsAuto      bool              // Docker build auto tag
 	TagsSuffix    string            // Docker build tags with suffix
-	Tags          cli.StringSlice   // Docker build tags
-	ExtraTags     cli.StringSlice   // Docker build tags including registry
-	Platforms     cli.StringSlice   // Docker build target platforms
+	Tags          []string          // Docker build tags
+	ExtraTags     []string          // Docker build tags including registry
+	Platforms     []string          // Docker build target platforms
 	Args          map[string]string // Docker build args
-	ArgsEnv       cli.StringSlice   // Docker build args from env
+	ArgsEnv       []string          // Docker build args from env
 	Target        string            // Docker build target
 	Pull          bool              // Docker build pull
 	CacheFrom     []string          // Docker build cache-from
@@ -41,11 +40,11 @@ type Build struct {
 	Compress      bool              // Docker build compress
 	Repo          string            // Docker build repository
 	NoCache       bool              // Docker build no-cache
-	AddHost       cli.StringSlice   // Docker build add-host
+	AddHost       []string          // Docker build add-host
 	Quiet         bool              // Docker build quiet
 	Output        string            // Docker build output folder
-	NamedContext  cli.StringSlice   // Docker build named context
-	Labels        cli.StringSlice   // Docker build labels
+	NamedContext  []string          // Docker build named context
+	Labels        []string          // Docker build labels
 	LabelsAuto    bool              // Docker build labels auto
 	Provenance    string            // Docker build provenance attestation
 	SBOM          string            // Docker build sbom attestation
@@ -109,7 +108,7 @@ func (b *Build) Run(env []string) *plugin_exec.Cmd {
 	maps.Copy(b.Args, defaultBuildArgs)
 
 	args = append(args, b.Context)
-	if !b.Dryrun && b.Output == "" && len(b.Tags.Value()) > 0 {
+	if !b.Dryrun && b.Output == "" && len(b.Tags) > 0 {
 		args = append(args, "--push")
 	}
 
@@ -133,7 +132,7 @@ func (b *Build) Run(env []string) *plugin_exec.Cmd {
 		args = append(args, "--cache-to", b.CacheTo)
 	}
 
-	for _, arg := range b.ArgsEnv.Value() {
+	for _, arg := range b.ArgsEnv {
 		b.addArgFromEnv(arg)
 	}
 
@@ -141,7 +140,7 @@ func (b *Build) Run(env []string) *plugin_exec.Cmd {
 		args = append(args, "--build-arg", fmt.Sprintf("%s=%s", key, value))
 	}
 
-	for _, host := range b.AddHost.Value() {
+	for _, host := range b.AddHost {
 		args = append(args, "--add-host", host)
 	}
 
@@ -157,23 +156,23 @@ func (b *Build) Run(env []string) *plugin_exec.Cmd {
 		args = append(args, "--output", b.Output)
 	}
 
-	for _, arg := range b.NamedContext.Value() {
+	for _, arg := range b.NamedContext {
 		args = append(args, "--build-context", arg)
 	}
 
-	if len(b.Platforms.Value()) > 0 {
-		args = append(args, "--platform", strings.Join(b.Platforms.Value(), ","))
+	if len(b.Platforms) > 0 {
+		args = append(args, "--platform", strings.Join(b.Platforms, ","))
 	}
 
-	for _, arg := range b.Tags.Value() {
+	for _, arg := range b.Tags {
 		args = append(args, "-t", fmt.Sprintf("%s:%s", b.Repo, arg))
 	}
 
-	for _, arg := range b.ExtraTags.Value() {
+	for _, arg := range b.ExtraTags {
 		args = append(args, "-t", arg)
 	}
 
-	for _, arg := range b.Labels.Value() {
+	for _, arg := range b.Labels {
 		args = append(args, "--label", arg)
 	}
 

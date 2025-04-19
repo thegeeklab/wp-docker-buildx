@@ -11,12 +11,10 @@ import (
 	"github.com/cenkalti/backoff/v5"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v4/exec"
-	plugin_file "github.com/thegeeklab/wp-plugin-go/v4/file"
-	plugin_tag "github.com/thegeeklab/wp-plugin-go/v4/tag"
-	plugin_types "github.com/thegeeklab/wp-plugin-go/v4/types"
-	plugin_util "github.com/thegeeklab/wp-plugin-go/v4/util"
-	"github.com/urfave/cli/v2"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
+	plugin_file "github.com/thegeeklab/wp-plugin-go/v6/file"
+	plugin_tag "github.com/thegeeklab/wp-plugin-go/v6/tag"
+	plugin_util "github.com/thegeeklab/wp-plugin-go/v6/util"
 )
 
 var ErrTypeAssertionFailed = errors.New("type assertion failed")
@@ -29,10 +27,6 @@ const (
 )
 
 func (p *Plugin) run(ctx context.Context) error {
-	if err := p.FlagsFromContext(); err != nil {
-		return fmt.Errorf("validation failed: %w", err)
-	}
-
 	if err := p.Validate(); err != nil {
 		return fmt.Errorf("validation failed: %w", err)
 	}
@@ -46,6 +40,8 @@ func (p *Plugin) run(ctx context.Context) error {
 
 // Validate handles the settings validation of the plugin.
 func (p *Plugin) Validate() error {
+	var err error
+
 	p.Settings.Build.Time = time.Now().Format(time.RFC3339)
 	p.Settings.Build.Branch = p.Metadata.Repository.Branch
 	p.Settings.Build.Ref = p.Metadata.Curr.Ref
@@ -57,7 +53,7 @@ func (p *Plugin) Validate() error {
 			p.Settings.Build.Ref,
 			p.Settings.Build.Branch,
 		) {
-			tag, err := plugin_tag.SemverTagSuffix(
+			p.Settings.Build.Tags, err = plugin_tag.SemverTagSuffix(
 				p.Settings.Build.Ref,
 				p.Settings.Build.TagsSuffix,
 				true,
@@ -65,8 +61,6 @@ func (p *Plugin) Validate() error {
 			if err != nil {
 				return fmt.Errorf("cannot generate tags from %s, invalid semantic version: %w", p.Settings.Build.Ref, err)
 			}
-
-			p.Settings.Build.Tags = *cli.NewStringSlice(tag...)
 		} else {
 			log.Info().Msgf("skip auto-tagging for %s, not on default branch or tag", p.Settings.Build.Ref)
 
@@ -75,15 +69,13 @@ func (p *Plugin) Validate() error {
 	}
 
 	if p.Settings.Build.LabelsAuto {
-		p.Settings.Build.Labels = *cli.NewStringSlice(p.GenerateLabels()...)
+		p.Settings.Build.Labels = p.GenerateLabels()
 	}
 
 	return nil
 }
 
 // Execute provides the implementation of the plugin.
-//
-//nolint:gocognit
 func (p *Plugin) Execute(ctx context.Context) error {
 	var err error
 
@@ -94,7 +86,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 	//nolint: nestif
 	if !p.Settings.Daemon.Disabled {
 		// If no custom DNS value set start internal DNS server
-		if len(p.Settings.Daemon.DNS.Value()) == 0 {
+		if len(p.Settings.Daemon.DNS) == 0 {
 			ip, err := GetContainerIP()
 			if err != nil {
 				log.Warn().Msgf("error detecting IP address: %v", err)
@@ -108,9 +100,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 					_ = cmd.Run()
 				}()
 
-				if err := p.Settings.Daemon.DNS.Set(ip); err != nil {
-					return fmt.Errorf("error setting daemon dns: %w", err)
-				}
+				p.Settings.Daemon.DNS = append(p.Settings.Daemon.DNS, ip)
 			}
 		}
 
@@ -203,34 +193,6 @@ func (p *Plugin) Execute(ctx context.Context) error {
 		if err := cmd.Run(); err != nil {
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (p *Plugin) FlagsFromContext() error {
-	cacheFrom, ok := p.Context.Generic("cache-from").(*plugin_types.StringSliceFlag)
-	if !ok {
-		return fmt.Errorf("%w: failed to read cache-from input", ErrTypeAssertionFailed)
-	}
-
-	p.Settings.Build.CacheFrom = cacheFrom.Get()
-
-	secrets, ok := p.Context.Generic("secrets").(*plugin_types.StringSliceFlag)
-	if !ok {
-		return fmt.Errorf("%w: failed to read secrets input", ErrTypeAssertionFailed)
-	}
-
-	p.Settings.Build.Secrets = secrets.Get()
-
-	args, ok := p.Context.Generic("args").(*plugin_types.StringMapFlag)
-	if !ok {
-		return fmt.Errorf("%w: failed to read args input", ErrTypeAssertionFailed)
-	}
-
-	p.Settings.Build.Args = args.Get()
-	if p.Settings.Build.Args == nil {
-		p.Settings.Build.Args = make(map[string]string)
 	}
 
 	return nil
