@@ -96,6 +96,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 				log.Debug().Msgf("discovered IP address: %v", ip)
 
 				cmd := p.Settings.Daemon.StartCoreDNS()
+
 				go func() {
 					_ = cmd.Run()
 				}()
@@ -105,6 +106,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 		}
 
 		cmd := p.Settings.Daemon.Start()
+
 		go func() {
 			_ = cmd.Run()
 		}()

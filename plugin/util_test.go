@@ -46,6 +46,7 @@ func TestWriteDockerConf(t *testing.T) {
 			assert.NoError(t, err, "Failed to read config file")
 
 			var got, want interface{}
+
 			err = json.Unmarshal(content, &got)
 			assert.NoError(t, err, "Failed to parse written config")
 
