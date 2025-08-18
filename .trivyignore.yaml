@@ -1,4 +1,4 @@
 ---
 vulnerabilities:
-  - id: CVE-2025-22874
-    expired_at: 2025-07-22
+  - id: CVE-2025-47907
+    expired_at: 2025-09-18
