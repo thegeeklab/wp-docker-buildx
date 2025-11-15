@@ -48,3 +48,15 @@ vulnerabilities:
       - "usr/lib/docker/cli-plugins/docker-buildx"
       - "usr/local/libexec/docker/cli-plugins/docker-buildx"
       - "usr/local/libexec/docker/cli-plugins/docker-compose"
+
+  - id: CVE-2025-52881
+    expired_at: 2025-12-04
+    paths:
+      - "usr/local/bin/containerd"
+      - "usr/local/bin/ctr"
+
+  - id: CVE-2024-25621
+    expired_at: 2025-12-04
+    paths:
+      - "usr/lib/docker/cli-plugins/docker-buildx"
+      - "usr/local/libexec/docker/cli-plugins/docker-compose"
