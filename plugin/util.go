@@ -2,12 +2,13 @@ package plugin
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net"
 	"os"
 )
 
-var errInvalidDockerConfig = fmt.Errorf("invalid docker config")
+var errInvalidDockerConfig = errors.New("invalid docker config")
 
 func GetContainerIP() (string, error) {
 	netInterfaceAddrList, err := net.InterfaceAddrs()
