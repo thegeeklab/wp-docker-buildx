@@ -1,13 +1,30 @@
 ---
 vulnerabilities:
-  - id: CVE-2025-61729
+  - id: CVE-2025-68121
     expired_at: 2026-03-21
     paths:
       - "usr/lib/docker/cli-plugins/docker-buildx"
+      - "usr/local/bin/containerd"
+      - "usr/local/bin/containerd-shim-runc-v2"
+      - "usr/local/bin/ctr"
+      - "usr/local/bin/docker"
+      - "usr/local/bin/docker-proxy"
+      - "usr/local/bin/dockerd"
+      - "usr/local/bin/runc"
       - "usr/local/libexec/docker/cli-plugins/docker-buildx"
+      - "usr/local/libexec/docker/cli-plugins/docker-compose"
 
-  - id: CVE-2025-52881
+  - id: CVE-2025-61726
     expired_at: 2026-03-21
     paths:
-      - "usr/local/bin/containerd"
-      - "usr/local/bin/ctr"
+      - "usr/local/libexec/docker/cli-plugins/docker-compose"
+
+  - id: CVE-2025-61728
+    expired_at: 2026-03-21
+    paths:
+      - "usr/local/libexec/docker/cli-plugins/docker-compose"
+
+  - id: CVE-2025-61730
+    expired_at: 2026-03-21
+    paths:
+      - "usr/local/libexec/docker/cli-plugins/docker-compose"
