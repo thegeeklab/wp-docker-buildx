@@ -28,7 +28,7 @@ func TestSecretsFlag(t *testing.T) {
 		{
 			name: "parse secrets list with escape",
 			envs: map[string]string{
-				"PLUGIN_SECRETS": "id=raw_file_secret\\,src=file.txt,id=SECRET_TOKEN",
+				"PLUGIN_SECRETS": "id=raw_file_secret\\,src=file.txt,id=SECRET_TOKEN", //#nosec G101
 			},
 			want: []string{
 				"id=raw_file_secret,src=file.txt",
