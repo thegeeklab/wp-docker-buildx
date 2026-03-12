@@ -1,0 +1,7 @@
+---
+scan:
+  skip-files:
+    - /usr/lib/docker/cli-plugins/docker-buildx
+    - /usr/local/bin/containerd
+    - /usr/local/libexec/docker/cli-plugins/docker-buildx
+    - /usr/local/libexec/docker/cli-plugins/docker-compose
