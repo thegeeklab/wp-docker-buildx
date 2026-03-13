@@ -6,7 +6,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.11.1
-	github.com/thegeeklab/wp-plugin-go/v6 v6.0.13
+	github.com/thegeeklab/wp-plugin-go/v6 v6.0.14
 	github.com/urfave/cli/v3 v3.7.0
 )
 
@@ -27,7 +27,7 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
 	golang.org/x/crypto v0.48.0 // indirect
-	golang.org/x/net v0.50.0 // indirect
-	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/net v0.51.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
