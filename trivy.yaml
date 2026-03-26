@@ -1,7 +1,13 @@
 ---
 scan:
   skip-files:
-    - /usr/lib/docker/cli-plugins/docker-buildx
     - /usr/local/bin/containerd
+    - /usr/local/bin/containerd-shim-runc-v2
+    - /usr/local/bin/ctr
+    - /usr/lib/docker/cli-plugins/docker-buildx
     - /usr/local/libexec/docker/cli-plugins/docker-buildx
     - /usr/local/libexec/docker/cli-plugins/docker-compose
+    - /usr/local/bin/docker
+    - /usr/local/bin/docker-proxy
+    - /usr/local/bin/dockerd
+    - /usr/local/bin/runc

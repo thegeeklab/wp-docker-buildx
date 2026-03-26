@@ -1,3 +1,4 @@
+---
 repository:
   name: wp-docker-buildx
   description: Woodpecker CI plugin to build multiarch OCI images with buildx
