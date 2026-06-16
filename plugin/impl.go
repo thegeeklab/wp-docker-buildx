@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/cenkalti/backoff/v5"
+	"github.com/cenkalti/backoff/v6"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
 	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
