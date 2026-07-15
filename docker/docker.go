@@ -108,7 +108,7 @@ func (b *Build) Run(env []string) *plugin_exec.Cmd {
 	maps.Copy(b.Args, defaultBuildArgs)
 
 	args = append(args, b.Context)
-	if !b.Dryrun && b.Output == "" && len(b.Tags) + len(b.ExtraTags) > 0 {
+	if !b.Dryrun && b.Output == "" && len(b.Tags)+len(b.ExtraTags) > 0 {
 		args = append(args, "--push")
 	}
 
