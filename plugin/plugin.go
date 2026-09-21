@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_cli "github.com/thegeeklab/wp-plugin-go/v6/cli"
-	plugin_base "github.com/thegeeklab/wp-plugin-go/v6/plugin"
+	plugin_cli "github.com/thegeeklab/wp-plugin-go/v7/cli"
+	plugin_base "github.com/thegeeklab/wp-plugin-go/v7/plugin"
 	"github.com/urfave/cli/v3"
 )
 

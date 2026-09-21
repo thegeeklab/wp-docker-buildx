@@ -11,10 +11,10 @@ import (
 	"github.com/cenkalti/backoff/v7"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
-	plugin_file "github.com/thegeeklab/wp-plugin-go/v6/file"
-	plugin_tag "github.com/thegeeklab/wp-plugin-go/v6/tag"
-	plugin_util "github.com/thegeeklab/wp-plugin-go/v6/util"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v7/exec"
+	plugin_file "github.com/thegeeklab/wp-plugin-go/v7/file"
+	plugin_tag "github.com/thegeeklab/wp-plugin-go/v7/tag"
+	plugin_util "github.com/thegeeklab/wp-plugin-go/v7/util"
 )
 
 var ErrTypeAssertionFailed = errors.New("type assertion failed")
