@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/urfave/cli/v3"
 )
 
@@ -76,7 +77,10 @@ func TestEnvironmentFlag(t *testing.T) {
 
 			got := setupPluginTest(t)
 
-			assert.ElementsMatch(t, tt.want, got.Environment.Value())
+			environment, err := got.GetEnvironment()
+			require.NoError(t, err)
+
+			assert.ElementsMatch(t, tt.want, environment.Value())
 		})
 	}
 }
