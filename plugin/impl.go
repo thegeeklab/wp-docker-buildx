@@ -11,10 +11,10 @@ import (
 	"github.com/cenkalti/backoff/v7"
 	"github.com/rs/zerolog/log"
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_exec "github.com/thegeeklab/wp-plugin-go/v6/exec"
-	plugin_file "github.com/thegeeklab/wp-plugin-go/v6/file"
-	plugin_tag "github.com/thegeeklab/wp-plugin-go/v6/tag"
-	plugin_util "github.com/thegeeklab/wp-plugin-go/v6/util"
+	plugin_exec "github.com/thegeeklab/wp-plugin-go/v7/exec"
+	plugin_file "github.com/thegeeklab/wp-plugin-go/v7/file"
+	plugin_tag "github.com/thegeeklab/wp-plugin-go/v7/tag"
+	plugin_util "github.com/thegeeklab/wp-plugin-go/v7/util"
 )
 
 var ErrTypeAssertionFailed = errors.New("type assertion failed")
@@ -40,11 +40,14 @@ func (p *Plugin) run(ctx context.Context) error {
 
 // Validate handles the settings validation of the plugin.
 func (p *Plugin) Validate() error {
-	var err error
+	metadata, err := p.GetMetadata()
+	if err != nil {
+		return fmt.Errorf("error while getting metadata: %w", err)
+	}
 
 	p.Settings.Build.Time = time.Now().Format(time.RFC3339)
-	p.Settings.Build.Branch = p.Metadata.Repository.Branch
-	p.Settings.Build.Ref = p.Metadata.Curr.Ref
+	p.Settings.Build.Branch = metadata.Repository.Branch
+	p.Settings.Build.Ref = metadata.Curr.Ref
 	p.Settings.Daemon.Registry = p.Settings.Registry.Address
 
 	if p.Settings.Build.TagsAuto {
@@ -76,8 +79,13 @@ func (p *Plugin) Validate() error {
 }
 
 // Execute provides the implementation of the plugin.
+//
+//nolint:gocognit
 func (p *Plugin) Execute(ctx context.Context) error {
-	var err error
+	environment, err := p.GetEnvironment()
+	if err != nil {
+		return fmt.Errorf("error while getting environment configuration: %w", err)
+	}
 
 	homeDir := plugin_util.GetUserHomeDir()
 	batchCmd := make([]*plugin_exec.Cmd, 0)
@@ -185,7 +193,7 @@ func (p *Plugin) Execute(ctx context.Context) error {
 	batchCmd = append(batchCmd, docker.Info())
 	batchCmd = append(batchCmd, p.Settings.Daemon.CreateBuilder())
 	batchCmd = append(batchCmd, p.Settings.Daemon.ListBuilder())
-	batchCmd = append(batchCmd, p.Settings.Build.Run(p.Environment.Value()))
+	batchCmd = append(batchCmd, p.Settings.Build.Run(environment.Value()))
 
 	for _, cmd := range batchCmd {
 		if cmd == nil {

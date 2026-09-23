@@ -6,6 +6,25 @@ properties:
     type: list
     required: false
 
+  - name: auto_label
+    description: |
+      Generates [opencontainers labels](https://github.com/opencontainers/image-spec/blob/main/annotations.md)
+      automatically based on Git repository information. If set, manual labels defined by the `labels` option
+      will be overwritten.
+
+      Generated labels:
+
+        - `org.opencontainers.image.created`
+        - `org.opencontainers.image.version`
+        - `org.opencontainers.image.source`
+        - `org.opencontainers.image.url`
+        - `org.opencontainers.image.revision`
+
+      The version label uses the last item from the `tags` option.
+    type: bool
+    defaultValue: false
+    required: false
+
   - name: auto_tag
     description: |
       Generate tag names automatically based on git branch and git tag.
@@ -47,7 +66,7 @@ properties:
               API_KEY:
                 from_secret: API_KEY
       ```
-    type: map
+    type: dict
     required: false
 
   - name: build_args_from_env
@@ -88,7 +107,8 @@ properties:
 
   - name: cache_from
     description: |
-      Images to consider as [cache sources](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from).
+      Images to consider as
+      [cache sources](https://docs.docker.com/engine/reference/commandline/buildx_build/#cache-from).
       To properly work, commas used in the cache source entries need to be escaped:
 
       ```yaml
@@ -117,13 +137,6 @@ properties:
       Enable compression of the build context using gzip.
     type: bool
     defaultValue: false
-    required: false
-
-  - name: registry_config
-    description: |
-      Content of the registry credentials store file.
-    type: string
-    defaultValue: $DOCKER_REGISTRY_CONFIG
     required: false
 
   - name: containerfile
@@ -180,6 +193,12 @@ properties:
     defaultValue: $DOCKER_EMAIL
     required: false
 
+  - name: environment
+    description: |
+      Plugin environment variables.
+    type: dict
+    required: false
+
   - name: experimental
     description: |
       Enable docker daemon experimental mode.
@@ -204,13 +223,6 @@ properties:
     defaultValue: false
     required: false
 
-  - name: insecure_skip_verify
-    description: |
-      Skip SSL verification.
-    type: bool
-    defaultValue: false
-    required: false
-
   - name: ipv6
     description: |
       Enable docker daemon IPv6 support.
@@ -224,49 +236,11 @@ properties:
     type: list
     required: false
 
-  - name: auto_label
-    description: |
-      Generates [opencontainers labels](https://github.com/opencontainers/image-spec/blob/main/annotations.md)
-      automatically based on Git repository information. If set, manual labels defined by the `labels` option
-      will be overwritten.
-
-      Generated labels:
-
-        - `org.opencontainers.image.created`
-        - `org.opencontainers.image.version`
-        - `org.opencontainers.image.source`
-        - `org.opencontainers.image.url`
-        - `org.opencontainers.image.revision`
-
-      The version label uses the last item from the `tags` option.
-    type: bool
-    defaultValue: false
-    required: false
-
   - name: log_level
     description: |
       Plugin log level.
     type: string
     defaultValue: "info"
-    required: false
-
-  - name: environment
-    description: |
-      Plugin environment variables exposed to the docker build command. In contrast to the step environment,
-      this option can be used if environment variables are to be used in conjunction with `from_secret`.
-      Example:
-
-      ```yaml
-      steps:
-        - name: Build
-          image: quay.io/thegeeklab/wp-docker-buildx
-          privileged: true
-          settings:
-            environment:
-              SECURE_TOKEN:
-                from_secret: secure_token
-      ```
-    type: map
     required: false
 
   - name: max_concurrent_uploads
@@ -351,6 +325,13 @@ properties:
       Docker registry to authenticate with.
     type: string
     defaultValue: "https://index.docker.io/v1/"
+    required: false
+
+  - name: registry_config
+    description: |
+      Content of the registry credentials store file.
+    type: string
+    defaultValue: $DOCKER_REGISTRY_CONFIG
     required: false
 
   - name: repo
