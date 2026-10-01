@@ -5,8 +5,8 @@ import (
 	"slices"
 
 	"github.com/thegeeklab/wp-docker-buildx/docker"
-	plugin_cli "github.com/thegeeklab/wp-plugin-go/v7/cli"
-	plugin_base "github.com/thegeeklab/wp-plugin-go/v7/plugin"
+	plugin_cli "github.com/thegeeklab/wp-plugin-go/v8/cli"
+	plugin_base "github.com/thegeeklab/wp-plugin-go/v8/plugin"
 	"github.com/urfave/cli/v3"
 )
 
