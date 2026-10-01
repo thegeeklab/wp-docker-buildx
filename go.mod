@@ -3,7 +3,7 @@ module github.com/thegeeklab/wp-docker-buildx
 go 1.27.1
 
 require (
-	github.com/cenkalti/backoff/v7 v7.0.0
+	github.com/cenkalti/backoff/v7 v7.0.1
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
 	github.com/thegeeklab/wp-plugin-go/v7 v7.0.2
