@@ -60,9 +60,9 @@ func TestWriteDockerConf(t *testing.T) {
 
 func TestGenerateLabels(t *testing.T) {
 	tests := []struct {
-		name       string
-		plugin     *Plugin
-		wantLabels []string
+		name   string
+		plugin *Plugin
+		want   []string
 	}{
 		{
 			name: "all fields populated",
@@ -83,7 +83,7 @@ func TestGenerateLabels(t *testing.T) {
 					SHA: "abc123",
 				},
 			},
-			wantLabels: []string{
+			want: []string{
 				"org.opencontainers.image.created=2023-01-01T00:00:00Z",
 				"org.opencontainers.image.source=https://github.com/example/repo",
 				"org.opencontainers.image.url=https://github.com/example/repo",
@@ -103,7 +103,7 @@ func TestGenerateLabels(t *testing.T) {
 					},
 				},
 			},
-			wantLabels: []string{
+			want: []string{
 				"org.opencontainers.image.created=2023-01-01T00:00:00Z",
 				"org.opencontainers.image.version=v1.0.0",
 			},
@@ -123,7 +123,7 @@ func TestGenerateLabels(t *testing.T) {
 					SHA: "abc123",
 				},
 			},
-			wantLabels: []string{
+			want: []string{
 				"org.opencontainers.image.created=2023-01-01T00:00:00Z",
 				"org.opencontainers.image.source=https://github.com/example/repo",
 				"org.opencontainers.image.url=https://github.com/example/repo",
@@ -135,7 +135,7 @@ func TestGenerateLabels(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := tt.plugin.GenerateLabels()
-			assert.ElementsMatch(t, tt.wantLabels, got)
+			assert.ElementsMatch(t, tt.want, got)
 		})
 	}
 }

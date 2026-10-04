@@ -8,28 +8,28 @@ import (
 
 func TestHasProxyBuildArg(t *testing.T) {
 	tests := []struct {
-		name     string
-		args     map[string]string
-		key      string
-		expected bool
+		name string
+		args map[string]string
+		key  string
+		want bool
 	}{
 		{
-			name:     "lowercase key exists",
-			args:     map[string]string{"http_proxy": "http://proxy.example.com"},
-			key:      "http_proxy",
-			expected: true,
+			name: "lowercase key exists",
+			args: map[string]string{"http_proxy": "http://proxy.example.com"},
+			key:  "http_proxy",
+			want: true,
 		},
 		{
-			name:     "uppercase key exists",
-			args:     map[string]string{"HTTP_PROXY": "http://proxy.example.com"},
-			key:      "http_proxy",
-			expected: true,
+			name: "uppercase key exists",
+			args: map[string]string{"HTTP_PROXY": "http://proxy.example.com"},
+			key:  "http_proxy",
+			want: true,
 		},
 		{
-			name:     "key does not exist",
-			args:     map[string]string{},
-			key:      "http_proxy",
-			expected: false,
+			name: "key does not exist",
+			args: map[string]string{},
+			key:  "http_proxy",
+			want: false,
 		},
 	}
 
@@ -37,33 +37,33 @@ func TestHasProxyBuildArg(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			b := &Build{Args: tt.args}
 			result := b.hasProxyBuildArg(tt.key)
-			assert.Equal(t, tt.expected, result)
+			assert.Equal(t, tt.want, result)
 		})
 	}
 }
 
 func TestGetProxyValue(t *testing.T) {
 	tests := []struct {
-		name     string
-		envVars  map[string]string
-		key      string
-		expected string
+		name    string
+		envVars map[string]string
+		key     string
+		want    string
 	}{
 		{
 			name: "lowercase env var exists",
 			envVars: map[string]string{
 				"http_proxy": "http://proxy.local",
 			},
-			key:      "http_proxy",
-			expected: "http://proxy.local",
+			key:  "http_proxy",
+			want: "http://proxy.local",
 		},
 		{
 			name: "uppercase env var exists",
 			envVars: map[string]string{
 				"HTTP_PROXY": "http://proxy.upper.local",
 			},
-			key:      "http_proxy",
-			expected: "http://proxy.upper.local",
+			key:  "http_proxy",
+			want: "http://proxy.upper.local",
 		},
 		{
 			name: "both cases exist, lowercase preferred",
@@ -71,14 +71,14 @@ func TestGetProxyValue(t *testing.T) {
 				"http_proxy": "http://proxy.lower.local",
 				"HTTP_PROXY": "http://proxy.upper.local",
 			},
-			key:      "http_proxy",
-			expected: "http://proxy.lower.local",
+			key:  "http_proxy",
+			want: "http://proxy.lower.local",
 		},
 		{
-			name:     "no env vars exist",
-			envVars:  map[string]string{},
-			key:      "http_proxy",
-			expected: "",
+			name:    "no env vars exist",
+			envVars: map[string]string{},
+			key:     "http_proxy",
+			want:    "",
 		},
 		{
 			name: "different proxy type",
@@ -86,8 +86,8 @@ func TestGetProxyValue(t *testing.T) {
 				"https_proxy": "https://secure.proxy.local",
 				"HTTPS_PROXY": "https://secure.proxy.upper.local",
 			},
-			key:      "https_proxy",
-			expected: "https://secure.proxy.local",
+			key:  "https_proxy",
+			want: "https://secure.proxy.local",
 		},
 	}
 
@@ -100,7 +100,7 @@ func TestGetProxyValue(t *testing.T) {
 
 			b := &Build{}
 			result := b.getProxyValue(tt.key)
-			assert.Equal(t, tt.expected, result)
+			assert.Equal(t, tt.want, result)
 		})
 	}
 }
@@ -111,7 +111,7 @@ func TestAddArgFromEnv(t *testing.T) {
 		envVars  map[string]string
 		key      string
 		existing map[string]string
-		expected map[string]string
+		want     map[string]string
 	}{
 		{
 			name: "add new env var",
@@ -119,23 +119,23 @@ func TestAddArgFromEnv(t *testing.T) {
 				"NEW_VAR": "test_value",
 			},
 			key: "NEW_VAR",
-			expected: map[string]string{
+			want: map[string]string{
 				"NEW_VAR": "test_value",
 			},
 		},
 		{
-			name:     "empty env var",
-			envVars:  map[string]string{},
-			key:      "MISSING_VAR",
-			expected: map[string]string{},
+			name:    "empty env var",
+			envVars: map[string]string{},
+			key:     "MISSING_VAR",
+			want:    map[string]string{},
 		},
 		{
 			name: "env var with empty value",
 			envVars: map[string]string{
 				"EMPTY_VAR": "",
 			},
-			key:      "EMPTY_VAR",
-			expected: map[string]string{},
+			key:  "EMPTY_VAR",
+			want: map[string]string{},
 		},
 		{
 			name: "multiple env vars",
@@ -144,7 +144,7 @@ func TestAddArgFromEnv(t *testing.T) {
 				"VAR2": "value2",
 			},
 			key: "VAR1",
-			expected: map[string]string{
+			want: map[string]string{
 				"VAR1": "value1",
 			},
 		},
@@ -154,7 +154,7 @@ func TestAddArgFromEnv(t *testing.T) {
 				"SPECIAL_VAR": "!@#$%^&*()",
 			},
 			key: "SPECIAL_VAR",
-			expected: map[string]string{
+			want: map[string]string{
 				"SPECIAL_VAR": "!@#$%^&*()",
 			},
 		},
@@ -167,7 +167,7 @@ func TestAddArgFromEnv(t *testing.T) {
 			existing: map[string]string{
 				"TEST_VAR": "old_value",
 			},
-			expected: map[string]string{
+			want: map[string]string{
 				"TEST_VAR": "old_value",
 			},
 		},
@@ -191,7 +191,7 @@ func TestAddArgFromEnv(t *testing.T) {
 			}
 
 			b.addArgFromEnv(tt.key)
-			assert.Equal(t, tt.expected, b.Args)
+			assert.Equal(t, tt.want, b.Args)
 		})
 	}
 }
