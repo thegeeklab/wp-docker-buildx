@@ -2,7 +2,6 @@ package plugin
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -16,8 +15,6 @@ import (
 	plugin_tag "github.com/thegeeklab/wp-plugin-go/v8/tag"
 	plugin_util "github.com/thegeeklab/wp-plugin-go/v8/util"
 )
-
-var ErrTypeAssertionFailed = errors.New("type assertion failed")
 
 const (
 	strictFilePerm               = 0o600
