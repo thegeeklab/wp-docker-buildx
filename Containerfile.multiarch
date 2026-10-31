@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.27.3@sha256:f20d83a83e18dbd2a4714b8ffd4b30b287b6243962dd75608e86abcc63ba4efc AS build
+FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.27.3@sha256:2920bb124f1a2e12a1d39f0cab756ae0068441ee1da7655dec7f5e374944095b AS build
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -29,7 +29,7 @@ ENV DOCKER_HOST=unix:///var/run/docker.sock
 RUN apk --update add --virtual .build-deps curl && \
     apk --update add --no-cache git coredns && \
     apk --no-cache upgrade libcrypto3 libssl3 openssl xz xz-libs libexpat pcre2 zlib \
-        nghttp2-libs c-ares libblkid libuuid && \
+        nghttp2-libs c-ares libblkid libuuid brotli-libs && \
     mkdir -p /usr/lib/docker/cli-plugins/ && \
     curl -SsL -o /usr/lib/docker/cli-plugins/docker-buildx \
         "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION##v}/buildx-v${BUILDX_VERSION##v}.${TARGETOS:-linux}-${TARGETARCH:-amd64}" && \
